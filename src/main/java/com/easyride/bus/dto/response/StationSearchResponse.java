@@ -6,7 +6,7 @@ import java.util.Optional;
 public record StationSearchResponse(
         Optional<String> code,
         Optional<String> message,
-        Optional<JsonNode> response
+        Optional<JsonNode> searchResult
 ) {
 
 }

@@ -1,6 +1,7 @@
 package com.easyride.bus.client;
 
 import com.easyride.bus.config.OdsayProperty;
+import com.easyride.bus.domain.Coordinates;
 import com.easyride.bus.domain.StationInfo;
 import com.easyride.bus.dto.request.StationSearchRequest;
 import com.easyride.bus.dto.response.StationSearchResponse;
@@ -29,12 +30,13 @@ public class OdsayBusClient {
     }
 
     public StationInfo serachStationInfo(StationSearchRequest searchRequest) {
+        Coordinates stationCoordinates = searchRequest.stationCoordinates();
         StationSearchResponse searchResponse = restClient.get()
                 .uri(makeStationSearchUrl(searchRequest))
                 .retrieve()
                 .body(StationSearchResponse.class);
 
-        return stationInfoMapper.responseToInfo(searchResponse, searchRequest.longitude(), searchRequest.latitude());
+        return stationInfoMapper.responseToInfo(searchResponse, stationCoordinates);
     }
 
     public String makeStationSearchUrl(StationSearchRequest searchRequest) {

@@ -1,5 +1,6 @@
 package com.easyride.bus.mapper;
 
+import com.easyride.bus.domain.Coordinates;
 import com.easyride.bus.domain.StationInfo;
 import com.easyride.bus.dto.response.StationSearchResponse;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -16,26 +17,28 @@ public class StationInfoMapper {
 
     private static final String ODSAY_SERVER_ERROR = "500";
 
-    public StationInfo responseToInfo(StationSearchResponse response, String longitude, String latitude) {
+    public StationInfo responseToInfo(StationSearchResponse response, Coordinates stationCoordinates) {
         if (response == null) {
-            throw new RuntimeException("response is null");
+            throw new RuntimeException("searchResult is null");
         }
 
         if (response.code().isPresent()) {
             checkOdsayException(response);
         }
 
-        return searchStationByCoordinates(response.response().get(), longitude, latitude);
+        return response.searchResult()
+                .map(node -> searchStationByCoordinates(node, stationCoordinates))
+                .orElseThrow(RuntimeException::new); //TODO 에러 교체
     }
 
-    private StationInfo searchStationByCoordinates(JsonNode node, String longitude, String latitude) {
+    private StationInfo searchStationByCoordinates(JsonNode node, Coordinates stationCoordinates) {
         Iterator<JsonNode> stationInfos = node.get("result")
                 .get("station")
                 .elements();
 
         while (stationInfos.hasNext()) {
             JsonNode stationInfo = stationInfos.next();
-            if (isSameStation(stationInfo, longitude, latitude)) {
+            if (isSameStation(stationInfo, stationCoordinates)) {
                 return mapStationInfo(stationInfo);
             }
         }
@@ -43,10 +46,11 @@ public class StationInfoMapper {
         throw new RuntimeException("같은 위치 좌표의 버스 정류장이 없습니다."); //TODO 500에러 객체 변경
     }
 
-    private boolean isSameStation(JsonNode stationInfo, String longitude, String latitude) {
-        String stationLongitude = stationInfo.get("x").asText();
-        String stationLatitude = stationInfo.get("y").asText();
-        return stationLongitude.equals(longitude) && stationLatitude.equals(latitude);
+    private boolean isSameStation(JsonNode stationInfo, Coordinates stationCoordinates) {
+        String responseLongitude = stationInfo.get("x").asText();
+        String responseLatitude = stationInfo.get("y").asText();
+        Coordinates responseCoordinates = new Coordinates(responseLongitude, responseLatitude);
+        return stationCoordinates.equals(responseCoordinates);
     }
 
     private StationInfo mapStationInfo(JsonNode node) {
