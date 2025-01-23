@@ -46,7 +46,6 @@ public class OdsayBusClient {
                 .queryParam("apiKey", property.apiKey())
                 .queryParam("stationName", searchRequest.stationName())
                 .queryParam("stationClass", "1")
-                .queryParam("key", property.apiKey())
                 .build(false)
                 .toUriString();
     }
