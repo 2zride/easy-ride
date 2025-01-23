@@ -6,11 +6,13 @@ import com.easyride.bus.domain.StationInfo;
 import com.easyride.bus.dto.request.StationSearchRequest;
 import com.easyride.bus.dto.response.StationSearchResponse;
 import com.easyride.bus.mapper.StationInfoMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.util.UriComponentsBuilder;
 
+@Slf4j
 @Component
 @EnableConfigurationProperties(OdsayProperty.class)
 public class OdsayBusClient {
@@ -39,7 +41,7 @@ public class OdsayBusClient {
         return stationInfoMapper.responseToInfo(searchResponse, stationCoordinates);
     }
 
-    public String makeStationSearchUrl(StationSearchRequest searchRequest) {
+    private String makeStationSearchUrl(StationSearchRequest searchRequest) {
         return UriComponentsBuilder.fromHttpUrl(property.baseUrl())
                 .queryParam("apiKey", property.apiKey())
                 .queryParam("stationName", searchRequest.stationName())
