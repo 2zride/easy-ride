@@ -31,7 +31,7 @@ public class OdsayBusClient {
         this.stationInfoMapper = stationInfoMapper;
     }
 
-    public StationInfo serachStationInfo(StationSearchRequest searchRequest) {
+    public StationInfo searchStationInfo(StationSearchRequest searchRequest) {
         Coordinates stationCoordinates = searchRequest.stationCoordinates();
         StationSearchResponse searchResponse = restClient.get()
                 .uri(makeStationSearchUrl(searchRequest))
