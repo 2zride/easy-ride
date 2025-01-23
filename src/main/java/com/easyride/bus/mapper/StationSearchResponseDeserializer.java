@@ -25,7 +25,7 @@ public class StationSearchResponseDeserializer extends JsonDeserializer<StationS
 
     private StationSearchResponse parse(JsonNode node) {
         Optional<String> code = find(node, "code");
-        Optional<String> message = find(node, "message", "msg");
+        Optional<String> message = find(node, "message");
         return new StationSearchResponse(code, message, Optional.of(node));
     }
 
