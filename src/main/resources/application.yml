@@ -3,6 +3,6 @@ spring:
     name: EasyRide
 
 odsay:
-  base-url: https://api.odsay.com/v1/api/searchPubTransPathT
+  base-url: https://api.odsay.com/v1/api/searchStation
   api-key:
 
