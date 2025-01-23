@@ -22,7 +22,7 @@ public class StationInfoMapper {
     private static final String STATION_LONGITUDE_FIELD_NAME = "x";
     private static final String STATION_LATITUDE_FIELD_NAME = "y";
     private static final String BUS_NUMBER_FIELD_NAME = "busNo";
-    private static final String API_RESPONSE_FIELD_NAME = "response";
+    private static final String API_RESPONSE_FIELD_NAME = "result";
 
     public StationInfo responseToInfo(StationSearchResponse response, Coordinates stationCoordinates) {
         if (response == null) {
