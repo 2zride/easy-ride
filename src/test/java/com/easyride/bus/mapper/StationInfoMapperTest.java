@@ -68,6 +68,16 @@ class StationInfoMapperTest {
                 .hasMessage("400 에러");
     }
 
+    @DisplayName("응답값이 null이면, 에러를 반환한다")
+    @Test
+    void nullCheck() {
+        StationInfoMapper stationInfoMapper = new StationInfoMapper();
+        Coordinates stationCoordinates = new Coordinates("126.978009", "37.4011");
+
+        assertThatThrownBy(() -> stationInfoMapper.responseToInfo(null, stationCoordinates))
+                .isInstanceOf(RuntimeException.class);
+    }
+
     public JsonNode readJsonFileAsNode(String path) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         ClassPathResource resource = new ClassPathResource(path);
