@@ -1,10 +1,12 @@
 package com.easyride.bus.dto.response;
 
-import java.util.List;
+import com.easyride.bus.domain.StationInfo;
+import java.util.Optional;
 
 public record StationSearchResponse(
-        long stationId,
-        List<String> busNumbers
+        Optional<String> code,
+        Optional<String> message,
+        Optional<StationInfo> stationInfo
 ) {
 
 }
