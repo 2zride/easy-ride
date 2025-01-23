@@ -16,6 +16,13 @@ import org.springframework.stereotype.Component;
 public class StationInfoMapper {
 
     private static final String ODSAY_SERVER_ERROR = "500";
+    private static final String BUS_INFO_ARRAY_FIELD_NAME = "businfo";
+    private static final String STATION_INFO_ARRAY_FIELD_NAME = "station";
+    private static final String STATION_ID_FIELD_NAME = "stationID";
+    private static final String STATION_LONGITUDE_FIELD_NAME = "x";
+    private static final String STATION_LATITUDE_FIELD_NAME = "y";
+    private static final String BUS_NUMBER_FIELD_NAME = "busNo";
+    private static final String API_RESPONSE_FIELD_NAME = "response";
 
     public StationInfo responseToInfo(StationSearchResponse response, Coordinates stationCoordinates) {
         if (response == null) {
@@ -32,10 +39,7 @@ public class StationInfoMapper {
     }
 
     private StationInfo searchStationByCoordinates(JsonNode node, Coordinates stationCoordinates) {
-        Iterator<JsonNode> stationInfos = node.get("result")
-                .get("station")
-                .elements();
-
+        Iterator<JsonNode> stationInfos = findStationInfos(node);
         while (stationInfos.hasNext()) {
             JsonNode stationInfo = stationInfos.next();
             if (isSameStation(stationInfo, stationCoordinates)) {
@@ -46,21 +50,27 @@ public class StationInfoMapper {
         throw new RuntimeException("같은 위치 좌표의 버스 정류장이 없습니다."); //TODO 500에러 객체 변경
     }
 
+    private static Iterator<JsonNode> findStationInfos(JsonNode node) {
+        return node.get(API_RESPONSE_FIELD_NAME)
+                .get(STATION_INFO_ARRAY_FIELD_NAME)
+                .elements();
+    }
+
     private boolean isSameStation(JsonNode stationInfo, Coordinates stationCoordinates) {
-        String responseLongitude = stationInfo.get("x").asText();
-        String responseLatitude = stationInfo.get("y").asText();
+        String responseLongitude = stationInfo.get(STATION_LONGITUDE_FIELD_NAME).asText();
+        String responseLatitude = stationInfo.get(STATION_LATITUDE_FIELD_NAME).asText();
         Coordinates responseCoordinates = new Coordinates(responseLongitude, responseLatitude);
         return stationCoordinates.equals(responseCoordinates);
     }
 
     private StationInfo mapStationInfo(JsonNode node) {
-        long stationId = node.get("stationID").asLong();
-        List<String> busNumbers = new ArrayList<>();
-        Iterator<JsonNode> busInfos = node.get("busInfo").elements();
+        long stationId = node.get(STATION_ID_FIELD_NAME).asLong();
+        Iterator<JsonNode> busInfos = node.get(BUS_INFO_ARRAY_FIELD_NAME).elements();
 
+        List<String> busNumbers = new ArrayList<>();
         while (busInfos.hasNext()) {
             JsonNode busInfo = busInfos.next();
-            busNumbers.add(busInfo.get("busNo").asText());
+            busNumbers.add(busInfo.get(BUS_NUMBER_FIELD_NAME).asText());
         }
 
         return new StationInfo(stationId, busNumbers);
