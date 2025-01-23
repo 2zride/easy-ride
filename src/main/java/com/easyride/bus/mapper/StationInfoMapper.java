@@ -50,7 +50,7 @@ public class StationInfoMapper {
         throw new RuntimeException("같은 위치 좌표의 버스 정류장이 없습니다."); //TODO 500에러 객체 변경
     }
 
-    private static Iterator<JsonNode> findStationInfos(JsonNode node) {
+    private Iterator<JsonNode> findStationInfos(JsonNode node) {
         return node.get(API_RESPONSE_FIELD_NAME)
                 .get(STATION_INFO_ARRAY_FIELD_NAME)
                 .elements();
