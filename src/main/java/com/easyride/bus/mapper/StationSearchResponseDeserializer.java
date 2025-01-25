@@ -24,9 +24,10 @@ public class StationSearchResponseDeserializer extends JsonDeserializer<StationS
     }
 
     private StationSearchResponse parse(JsonNode node) {
+        boolean isSuccess = node.findPath("error").isMissingNode();
         Optional<String> code = find(node, "code");
         Optional<String> message = find(node, "message");
-        return new StationSearchResponse(code, message, Optional.of(node));
+        return new StationSearchResponse(isSuccess, code, message, Optional.of(node));
     }
 
     private Optional<String> find(JsonNode node, String... fieldName) {

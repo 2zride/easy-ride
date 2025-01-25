@@ -1,627 +1,86 @@
 {
   "result": {
-    "totalCityList": {
-      "includeCity": [
-        {
-          "cityName": "안양",
-          "CID": 1030
-        }
-      ]
-    },
-    "totalCount": 7,
-    "station": [
+    "count": 1,
+    "lane": [
       {
         "stationClass": 1,
-        "stationName": "인덕원역1번출구",
         "stationID": 185660,
+        "stationName": "인덕원역1번출구",
         "x": 126.978009,
         "y": 37.4011,
-        "CID": 1030,
-        "cityName": "안양",
-        "arsID": "10181",
-        "do": "경기도",
-        "gu": "안양시 동안구",
-        "dong": "관양동",
-        "businfo": [
+        "busOnlyCentralLane": 0,
+        "busList": [
           {
-            "busClass": "1",
-            "busLocalBlID": "204000060",
+            "busID": 5069,
+            "type": 1,
             "busNo": "103"
           },
           {
-            "busClass": "1",
-            "busLocalBlID": "208000038",
+            "busID": 6004,
+            "type": 1,
             "busNo": "83"
           },
           {
-            "busClass": "1",
-            "busLocalBlID": "208000041",
+            "busID": 6012,
+            "type": 1,
             "busNo": "80"
           },
           {
-            "busClass": "1",
-            "busLocalBlID": "208000024",
+            "busID": 6014,
+            "type": 1,
             "busNo": "1-1"
           },
           {
-            "busClass": "4",
-            "busLocalBlID": "200000109",
+            "busID": 9604,
+            "type": 4,
             "busNo": "7002"
           },
           {
-            "busClass": "4",
-            "busLocalBlID": "234000130",
+            "busID": 10095,
+            "type": 4,
             "busNo": "1303"
           },
           {
-            "busClass": "3",
-            "busLocalBlID": "241401003",
+            "busID": 18902,
+            "type": 3,
             "busNo": "13"
           },
           {
-            "busClass": "3",
-            "busLocalBlID": "241402003",
+            "busID": 18907,
+            "type": 3,
             "busNo": "06-2"
           },
           {
-            "busClass": "3",
-            "busLocalBlID": "241453016",
+            "busID": 18918,
+            "type": 3,
             "busNo": "05-1"
           },
           {
-            "busClass": "3",
-            "busLocalBlID": "241395002",
+            "busID": 18921,
+            "type": 3,
             "busNo": "10"
           },
           {
-            "busClass": "3",
-            "busLocalBlID": "241453015",
+            "busID": 18925,
+            "type": 3,
             "busNo": "05"
           },
           {
-            "busClass": "3",
-            "busLocalBlID": "241402002",
+            "busID": 18933,
+            "type": 3,
             "busNo": "06-1(A)"
           },
           {
-            "busClass": "3",
-            "busLocalBlID": "241402001",
+            "busID": 18935,
+            "type": 3,
             "busNo": "06"
           },
           {
-            "busClass": "4",
-            "busLocalBlID": "233000325",
+            "busID": 2804430,
+            "type": 4,
             "busNo": "7200"
           }
-        ],
-        "localStationID": "209000152",
-        "ebid": "10181",
-        "stationDirectionName": "인덕원역8번출구",
-        "busOnlyCentralLane": 0
-      },
-      {
-        "stationClass": 1,
-        "stationName": "인덕원역2번출구",
-        "stationID": 185659,
-        "x": 126.977822,
-        "y": 37.400783,
-        "CID": 1030,
-        "cityName": "안양",
-        "arsID": "10180",
-        "do": "경기도",
-        "gu": "안양시 동안구",
-        "dong": "관양2동",
-        "businfo": [
-          {
-            "busClass": "1",
-            "busLocalBlID": "204000060",
-            "busNo": "103"
-          },
-          {
-            "busClass": "1",
-            "busLocalBlID": "208000038",
-            "busNo": "83"
-          },
-          {
-            "busClass": "1",
-            "busLocalBlID": "208000041",
-            "busNo": "80"
-          },
-          {
-            "busClass": "1",
-            "busLocalBlID": "208000024",
-            "busNo": "1-1"
-          },
-          {
-            "busClass": "1",
-            "busLocalBlID": "208000029",
-            "busNo": "22"
-          },
-          {
-            "busClass": "1",
-            "busLocalBlID": "208000036",
-            "busNo": "1-5"
-          },
-          {
-            "busClass": "4",
-            "busLocalBlID": "200000109",
-            "busNo": "7002"
-          },
-          {
-            "busClass": "4",
-            "busLocalBlID": "234000130",
-            "busNo": "1303"
-          },
-          {
-            "busClass": "3",
-            "busLocalBlID": "241401002",
-            "busNo": "12"
-          },
-          {
-            "busClass": "3",
-            "busLocalBlID": "241401003",
-            "busNo": "13"
-          },
-          {
-            "busClass": "3",
-            "busLocalBlID": "241402003",
-            "busNo": "06-2"
-          },
-          {
-            "busClass": "3",
-            "busLocalBlID": "241453016",
-            "busNo": "05-1"
-          },
-          {
-            "busClass": "3",
-            "busLocalBlID": "241395002",
-            "busNo": "10"
-          },
-          {
-            "busClass": "3",
-            "busLocalBlID": "241453015",
-            "busNo": "05"
-          },
-          {
-            "busClass": "3",
-            "busLocalBlID": "241402002",
-            "busNo": "06-1(A)"
-          },
-          {
-            "busClass": "3",
-            "busLocalBlID": "241402001",
-            "busNo": "06"
-          },
-          {
-            "busClass": "4",
-            "busLocalBlID": "233000325",
-            "busNo": "7200"
-          },
-          {
-            "busClass": "1",
-            "busLocalBlID": "208000067",
-            "busNo": "33"
-          }
-        ],
-        "localStationID": "209000151",
-        "ebid": "10180",
-        "stationDirectionName": "인덕원삼성아파트.인덕원고등학교",
-        "busOnlyCentralLane": 0
-      },
-      {
-        "stationClass": 1,
-        "stationName": "인덕원역3번출구",
-        "stationID": 104785,
-        "x": 126.977231,
-        "y": 37.400174,
-        "CID": 1030,
-        "cityName": "안양",
-        "arsID": "10177",
-        "do": "경기도",
-        "gu": "안양시 동안구",
-        "dong": "관양동",
-        "businfo": [
-          {
-            "busClass": "11",
-            "busLocalBlID": "100100070",
-            "busNo": "441"
-          },
-          {
-            "busClass": "11",
-            "busLocalBlID": "100100410",
-            "busNo": "502"
-          },
-          {
-            "busClass": "11",
-            "busLocalBlID": "100100083",
-            "busNo": "540"
-          },
-          {
-            "busClass": "1",
-            "busLocalBlID": "233000007",
-            "busNo": "777"
-          },
-          {
-            "busClass": "1",
-            "busLocalBlID": "208000072",
-            "busNo": "AY02-001"
-          }
-        ],
-        "localStationID": "209000142",
-        "ebid": "10177",
-        "stationDirectionName": "과천린파밀리에",
-        "busOnlyCentralLane": 0
-      },
-      {
-        "stationClass": 1,
-        "stationName": "인덕원역4번출구",
-        "stationID": 104757,
-        "x": 126.976365,
-        "y": 37.400797,
-        "CID": 1030,
-        "cityName": "안양",
-        "arsID": "10175",
-        "do": "경기도",
-        "gu": "안양시 동안구",
-        "dong": "관양동",
-        "businfo": [
-          {
-            "busClass": "11",
-            "busLocalBlID": "100100070",
-            "busNo": "441"
-          },
-          {
-            "busClass": "11",
-            "busLocalBlID": "100100410",
-            "busNo": "502"
-          },
-          {
-            "busClass": "11",
-            "busLocalBlID": "100100083",
-            "busNo": "540"
-          },
-          {
-            "busClass": "1",
-            "busLocalBlID": "208000017",
-            "busNo": "51"
-          },
-          {
-            "busClass": "1",
-            "busLocalBlID": "208000010",
-            "busNo": "8-1"
-          },
-          {
-            "busClass": "1",
-            "busLocalBlID": "208000039",
-            "busNo": "60-1"
-          },
-          {
-            "busClass": "1",
-            "busLocalBlID": "208000028",
-            "busNo": "8"
-          },
-          {
-            "busClass": "1",
-            "busLocalBlID": "208000029",
-            "busNo": "22"
-          },
-          {
-            "busClass": "1",
-            "busLocalBlID": "208000036",
-            "busNo": "1-5"
-          },
-          {
-            "busClass": "3",
-            "busLocalBlID": "241245005",
-            "busNo": "8"
-          },
-          {
-            "busClass": "1",
-            "busLocalBlID": "233000007",
-            "busNo": "777"
-          },
-          {
-            "busClass": "3",
-            "busLocalBlID": "241401002",
-            "busNo": "12"
-          },
-          {
-            "busClass": "1",
-            "busLocalBlID": "208000067",
-            "busNo": "33"
-          },
-          {
-            "busClass": "1",
-            "busLocalBlID": "208000072",
-            "busNo": "AY02-001"
-          }
-        ],
-        "localStationID": "209000031",
-        "ebid": "10175",
-        "stationDirectionName": "평촌동행정복지센터.인덕원대우아파트",
-        "busOnlyCentralLane": 0
-      },
-      {
-        "stationClass": 1,
-        "stationName": "인덕원역4호선.인덕원성당",
-        "stationID": 104706,
-        "x": 126.973911,
-        "y": 37.403488,
-        "CID": 1030,
-        "cityName": "안양",
-        "arsID": "10166",
-        "do": "경기도",
-        "gu": "안양시 동안구",
-        "dong": "관양동",
-        "businfo": [
-          {
-            "busClass": "11",
-            "busLocalBlID": "100100574",
-            "busNo": "541"
-          },
-          {
-            "busClass": "1",
-            "busLocalBlID": "208000019",
-            "busNo": "9"
-          },
-          {
-            "busClass": "1",
-            "busLocalBlID": "208000041",
-            "busNo": "80"
-          },
-          {
-            "busClass": "1",
-            "busLocalBlID": "208000026",
-            "busNo": "917"
-          },
-          {
-            "busClass": "1",
-            "busLocalBlID": "208000004",
-            "busNo": "11-2"
-          },
-          {
-            "busClass": "1",
-            "busLocalBlID": "208000006",
-            "busNo": "11-3"
-          },
-          {
-            "busClass": "1",
-            "busLocalBlID": "208000005",
-            "busNo": "11-5"
-          },
-          {
-            "busClass": "4",
-            "busLocalBlID": "208000027",
-            "busNo": "3030"
-          },
-          {
-            "busClass": "3",
-            "busLocalBlID": "241245005",
-            "busNo": "8"
-          },
-          {
-            "busClass": "4",
-            "busLocalBlID": "234000130",
-            "busNo": "1303"
-          },
-          {
-            "busClass": "3",
-            "busLocalBlID": "241401003",
-            "busNo": "13"
-          },
-          {
-            "busClass": "3",
-            "busLocalBlID": "241402003",
-            "busNo": "06-2"
-          },
-          {
-            "busClass": "3",
-            "busLocalBlID": "241453016",
-            "busNo": "05-1"
-          },
-          {
-            "busClass": "3",
-            "busLocalBlID": "241395002",
-            "busNo": "10"
-          },
-          {
-            "busClass": "3",
-            "busLocalBlID": "241453015",
-            "busNo": "05"
-          },
-          {
-            "busClass": "3",
-            "busLocalBlID": "241402002",
-            "busNo": "06-1(A)"
-          },
-          {
-            "busClass": "3",
-            "busLocalBlID": "241402001",
-            "busNo": "06"
-          }
-        ],
-        "localStationID": "209000034",
-        "ebid": "10166",
-        "stationDirectionName": "인덕원역2번출구",
-        "busOnlyCentralLane": 0
-      },
-      {
-        "stationClass": 1,
-        "stationName": "인덕원역7번출구",
-        "stationID": 104746,
-        "x": 126.975197,
-        "y": 37.402743,
-        "CID": 1030,
-        "cityName": "안양",
-        "arsID": "10171",
-        "do": "경기도",
-        "gu": "안양시 동안구",
-        "dong": "관양동",
-        "businfo": [
-          {
-            "busClass": "1",
-            "busLocalBlID": "208000017",
-            "busNo": "51"
-          },
-          {
-            "busClass": "1",
-            "busLocalBlID": "208000010",
-            "busNo": "8-1"
-          },
-          {
-            "busClass": "1",
-            "busLocalBlID": "208000039",
-            "busNo": "60-1"
-          },
-          {
-            "busClass": "1",
-            "busLocalBlID": "208000028",
-            "busNo": "8"
-          },
-          {
-            "busClass": "5",
-            "busLocalBlID": "241007253",
-            "busNo": "4400"
-          }
-        ],
-        "localStationID": "209000032",
-        "ebid": "10171",
-        "stationDirectionName": "인덕원역4번출구",
-        "busOnlyCentralLane": 0
-      },
-      {
-        "stationClass": 1,
-        "stationName": "인덕원역8번출구",
-        "stationID": 104747,
-        "x": 126.975678,
-        "y": 37.403098,
-        "CID": 1030,
-        "cityName": "안양",
-        "arsID": "10173",
-        "do": "경기도",
-        "gu": "안양시 동안구",
-        "dong": "관양동",
-        "businfo": [
-          {
-            "busClass": "11",
-            "busLocalBlID": "100100574",
-            "busNo": "541"
-          },
-          {
-            "busClass": "1",
-            "busLocalBlID": "208000017",
-            "busNo": "51"
-          },
-          {
-            "busClass": "1",
-            "busLocalBlID": "208000038",
-            "busNo": "83"
-          },
-          {
-            "busClass": "1",
-            "busLocalBlID": "208000010",
-            "busNo": "8-1"
-          },
-          {
-            "busClass": "1",
-            "busLocalBlID": "208000039",
-            "busNo": "60-1"
-          },
-          {
-            "busClass": "1",
-            "busLocalBlID": "208000041",
-            "busNo": "80"
-          },
-          {
-            "busClass": "1",
-            "busLocalBlID": "208000020",
-            "busNo": "9-3"
-          },
-          {
-            "busClass": "1",
-            "busLocalBlID": "208000028",
-            "busNo": "8"
-          },
-          {
-            "busClass": "1",
-            "busLocalBlID": "208000026",
-            "busNo": "917"
-          },
-          {
-            "busClass": "1",
-            "busLocalBlID": "208000004",
-            "busNo": "11-2"
-          },
-          {
-            "busClass": "1",
-            "busLocalBlID": "208000006",
-            "busNo": "11-3"
-          },
-          {
-            "busClass": "1",
-            "busLocalBlID": "208000005",
-            "busNo": "11-5"
-          },
-          {
-            "busClass": "4",
-            "busLocalBlID": "208000027",
-            "busNo": "3030"
-          },
-          {
-            "busClass": "3",
-            "busLocalBlID": "241245005",
-            "busNo": "8"
-          },
-          {
-            "busClass": "4",
-            "busLocalBlID": "234000130",
-            "busNo": "1303"
-          },
-          {
-            "busClass": "3",
-            "busLocalBlID": "241401003",
-            "busNo": "13"
-          },
-          {
-            "busClass": "3",
-            "busLocalBlID": "241402003",
-            "busNo": "06-2"
-          },
-          {
-            "busClass": "3",
-            "busLocalBlID": "241453016",
-            "busNo": "05-1"
-          },
-          {
-            "busClass": "3",
-            "busLocalBlID": "241395002",
-            "busNo": "10"
-          },
-          {
-            "busClass": "3",
-            "busLocalBlID": "241453015",
-            "busNo": "05"
-          },
-          {
-            "busClass": "3",
-            "busLocalBlID": "241402002",
-            "busNo": "06-1(A)"
-          },
-          {
-            "busClass": "3",
-            "busLocalBlID": "241402001",
-            "busNo": "06"
-          },
-          {
-            "busClass": "5",
-            "busLocalBlID": "241007253",
-            "busNo": "4400"
-          }
-        ],
-        "localStationID": "209000116",
-        "ebid": "10173",
-        "stationDirectionName": "동편마을입구",
-        "busOnlyCentralLane": 0
+        ]
       }
     ]
   }

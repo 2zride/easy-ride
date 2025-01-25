@@ -16,8 +16,8 @@ import org.springframework.stereotype.Component;
 public class StationInfoMapper {
 
     private static final String ODSAY_SERVER_ERROR = "500";
-    private static final String BUS_INFO_ARRAY_FIELD_NAME = "businfo";
-    private static final String STATION_INFO_ARRAY_FIELD_NAME = "station";
+    private static final String BUS_INFO_ARRAY_FIELD_NAME = "busList";
+    private static final String STATION_INFO_ARRAY_FIELD_NAME = "lane";
     private static final String STATION_ID_FIELD_NAME = "stationID";
     private static final String STATION_LONGITUDE_FIELD_NAME = "x";
     private static final String STATION_LATITUDE_FIELD_NAME = "y";
@@ -29,7 +29,7 @@ public class StationInfoMapper {
             throw new RuntimeException("searchResult is null");
         }
 
-        if (response.code().isPresent()) {
+        if (!response.success()) {
             checkOdsayException(response);
         }
 

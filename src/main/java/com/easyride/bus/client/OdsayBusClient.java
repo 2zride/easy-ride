@@ -17,6 +17,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 @EnableConfigurationProperties(OdsayProperty.class)
 public class OdsayBusClient {
 
+    private static final int SEARCH_BUS_STATION_RADIUS = 1;
+
     private final OdsayProperty property;
     private final RestClient restClient;
     private final StationInfoMapper stationInfoMapper;
@@ -42,10 +44,12 @@ public class OdsayBusClient {
     }
 
     private String makeStationSearchUrl(StationSearchRequest searchRequest) {
-        return UriComponentsBuilder.fromHttpUrl(property.baseUrl())
+        GeoLocation stationGeoLocation = searchRequest.stationGeoLocation();
+        return UriComponentsBuilder.fromUriString(property.baseUrl())
                 .queryParam("apiKey", property.apiKey())
-                .queryParam("stationName", searchRequest.stationName())
-                .queryParam("stationClass", "1")
+                .queryParam("x", stationGeoLocation.getLongitude())
+                .queryParam("y", stationGeoLocation.getLatitude())
+                .queryParam("radius", String.valueOf(SEARCH_BUS_STATION_RADIUS))
                 .build(false)
                 .toUriString();
     }

@@ -11,7 +11,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -19,9 +18,8 @@ import org.springframework.core.io.ClassPathResource;
 
 class StationSearchResponseDeserializerTest {
 
-    @DisplayName("성공 응답의 경우, 응답값만 존재한다")
     @Test
-    void deserializeSuccessResponse() throws IOException {
+    void 성공_응답의_경우_응답값만_존재한다e() throws IOException {
         StationSearchResponseDeserializer customDeserializer = new StationSearchResponseDeserializer();
         DeserializationContext mockedContext = mock(DeserializationContext.class);
         JsonParser successResponse = getJsonParserByResponsePath("odsay/success.json");
@@ -35,10 +33,9 @@ class StationSearchResponseDeserializerTest {
         );
     }
 
-    @DisplayName("실패 응답의 경우, 에러 코드와 에러 메시지가 바인딩된다")
     @ParameterizedTest
-    @ValueSource(strings = {"odsay/error8.json", "odsay/error9.json", "odsay/error500.json"})
-    void deserializeErrorResponse(String errorResponsePath) throws IOException {
+    @ValueSource(strings = {"odsay/error.json", "odsay/error500.json"})
+    void 실패_응답의_경우_에러_코드와_에러_메시지가_바인딩된다(String errorResponsePath) throws IOException {
         StationSearchResponseDeserializer customDeserializer = new StationSearchResponseDeserializer();
         DeserializationContext mockedContext = mock(DeserializationContext.class);
         JsonParser successResponse = getJsonParserByResponsePath(errorResponsePath);
