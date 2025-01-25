@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class Coordinates {
+public class GeoLocation {
 
     private final String longitude;
     private final String latitude;
@@ -16,7 +16,7 @@ public class Coordinates {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Coordinates that = (Coordinates) o;
+        GeoLocation that = (GeoLocation) o;
         return Objects.equals(getLongitude(), that.getLongitude()) && Objects.equals(getLatitude(),
                 that.getLatitude());
     }

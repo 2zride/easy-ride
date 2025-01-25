@@ -3,7 +3,7 @@ package com.easyride.bus.mapper;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.easyride.bus.domain.Coordinates;
+import com.easyride.bus.domain.GeoLocation;
 import com.easyride.bus.dto.response.StationSearchResponse;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,14 +21,14 @@ class StationInfoMapperTest {
     void successCase() throws IOException {
         StationInfoMapper stationInfoMapper = new StationInfoMapper();
         JsonNode successResponse = readJsonFileAsNode("odsay/success.json");
-        Coordinates stationCoordinates = new Coordinates("126.978009", "37.4011");
+        GeoLocation stationGeoLocation = new GeoLocation("126.978009", "37.4011");
         StationSearchResponse response = new StationSearchResponse(
                 Optional.empty(),
                 Optional.empty(),
                 Optional.of(successResponse)
         );
 
-        assertThatCode(() -> stationInfoMapper.responseToInfo(response, stationCoordinates))
+        assertThatCode(() -> stationInfoMapper.responseToInfo(response, stationGeoLocation))
                 .doesNotThrowAnyException();
     }
 
@@ -36,7 +36,7 @@ class StationInfoMapperTest {
     @Test
     void error500() throws IOException {
         StationInfoMapper stationInfoMapper = new StationInfoMapper();
-        Coordinates stationCoordinates = new Coordinates("126.978009", "37.4011");
+        GeoLocation stationGeoLocation = new GeoLocation("126.978009", "37.4011");
         JsonNode serverErrorResponse = readJsonFileAsNode("odsay/error500.json");
 
         StationSearchResponse response = new StationSearchResponse(
@@ -45,7 +45,7 @@ class StationInfoMapperTest {
                 Optional.of(serverErrorResponse)
         );
 
-        assertThatThrownBy(() -> stationInfoMapper.responseToInfo(response, stationCoordinates))
+        assertThatThrownBy(() -> stationInfoMapper.responseToInfo(response, stationGeoLocation))
                 .isInstanceOf(RuntimeException.class)
                 .hasMessage("서버 에러");
     }
@@ -54,7 +54,7 @@ class StationInfoMapperTest {
     @Test
     void error400() throws IOException {
         StationInfoMapper stationInfoMapper = new StationInfoMapper();
-        Coordinates stationCoordinates = new Coordinates("126.978009", "37.4011");
+        GeoLocation stationGeoLocation = new GeoLocation("126.978009", "37.4011");
         JsonNode clientErrorResponse = readJsonFileAsNode("odsay/error9.json");
 
         StationSearchResponse response = new StationSearchResponse(
@@ -63,7 +63,7 @@ class StationInfoMapperTest {
                 Optional.of(clientErrorResponse)
         );
 
-        assertThatThrownBy(() -> stationInfoMapper.responseToInfo(response, stationCoordinates))
+        assertThatThrownBy(() -> stationInfoMapper.responseToInfo(response, stationGeoLocation))
                 .isInstanceOf(RuntimeException.class)
                 .hasMessage("400 에러");
     }
@@ -72,9 +72,9 @@ class StationInfoMapperTest {
     @Test
     void nullCheck() {
         StationInfoMapper stationInfoMapper = new StationInfoMapper();
-        Coordinates stationCoordinates = new Coordinates("126.978009", "37.4011");
+        GeoLocation stationGeoLocation = new GeoLocation("126.978009", "37.4011");
 
-        assertThatThrownBy(() -> stationInfoMapper.responseToInfo(null, stationCoordinates))
+        assertThatThrownBy(() -> stationInfoMapper.responseToInfo(null, stationGeoLocation))
                 .isInstanceOf(RuntimeException.class);
     }
 

@@ -1,6 +1,6 @@
 package com.easyride.bus.mapper;
 
-import com.easyride.bus.domain.Coordinates;
+import com.easyride.bus.domain.GeoLocation;
 import com.easyride.bus.domain.StationInfo;
 import com.easyride.bus.dto.response.StationSearchResponse;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -24,7 +24,7 @@ public class StationInfoMapper {
     private static final String BUS_NUMBER_FIELD_NAME = "busNo";
     private static final String API_RESPONSE_FIELD_NAME = "result";
 
-    public StationInfo responseToInfo(StationSearchResponse response, Coordinates stationCoordinates) {
+    public StationInfo responseToInfo(StationSearchResponse response, GeoLocation stationGeoLocation) {
         if (response == null) {
             throw new RuntimeException("searchResult is null");
         }
@@ -34,15 +34,15 @@ public class StationInfoMapper {
         }
 
         return response.searchResult()
-                .map(node -> searchStationByCoordinates(node, stationCoordinates))
+                .map(node -> searchStationByCoordinates(node, stationGeoLocation))
                 .orElseThrow(RuntimeException::new); //TODO 에러 교체
     }
 
-    private StationInfo searchStationByCoordinates(JsonNode node, Coordinates stationCoordinates) {
+    private StationInfo searchStationByCoordinates(JsonNode node, GeoLocation stationGeoLocation) {
         Iterator<JsonNode> stationInfos = findStationInfos(node);
         while (stationInfos.hasNext()) {
             JsonNode stationInfo = stationInfos.next();
-            if (isSameStation(stationInfo, stationCoordinates)) {
+            if (isSameStation(stationInfo, stationGeoLocation)) {
                 return mapStationInfo(stationInfo);
             }
         }
@@ -56,11 +56,11 @@ public class StationInfoMapper {
                 .elements();
     }
 
-    private boolean isSameStation(JsonNode stationInfo, Coordinates stationCoordinates) {
+    private boolean isSameStation(JsonNode stationInfo, GeoLocation stationGeoLocation) {
         String responseLongitude = stationInfo.get(STATION_LONGITUDE_FIELD_NAME).asText();
         String responseLatitude = stationInfo.get(STATION_LATITUDE_FIELD_NAME).asText();
-        Coordinates responseCoordinates = new Coordinates(responseLongitude, responseLatitude);
-        return stationCoordinates.equals(responseCoordinates);
+        GeoLocation responseGeoLocation = new GeoLocation(responseLongitude, responseLatitude);
+        return stationGeoLocation.equals(responseGeoLocation);
     }
 
     private StationInfo mapStationInfo(JsonNode node) {

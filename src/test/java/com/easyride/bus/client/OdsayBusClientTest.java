@@ -8,7 +8,7 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
 import com.easyride.bus.config.OdsayProperty;
-import com.easyride.bus.domain.Coordinates;
+import com.easyride.bus.domain.GeoLocation;
 import com.easyride.bus.domain.StationInfo;
 import com.easyride.bus.dto.request.StationSearchRequest;
 import com.easyride.bus.mapper.StationInfoMapper;
@@ -64,8 +64,8 @@ class OdsayBusClientTest {
                 "103", "83", "80", "1-1", "7002", "1303", "13", "06-2", "05-1", "10", "05", "06-1(A)", "06", "7200"
         );
         String stationSearchValue = "인덕원역";
-        Coordinates stationCoordinates = new Coordinates("126.978009", "37.4011");
-        StationSearchRequest request = new StationSearchRequest(stationSearchValue, stationCoordinates);
+        GeoLocation stationGeoLocation = new GeoLocation("126.978009", "37.4011");
+        StationSearchRequest request = new StationSearchRequest(stationSearchValue, stationGeoLocation);
 
         setMockServer(stationSearchValue, "odsay/success.json");
 
@@ -82,8 +82,8 @@ class OdsayBusClientTest {
     @Test
     void errorCode8() throws IOException {
         String stationSearchValue = "_";
-        Coordinates stationCoordinates = new Coordinates("126.978009", "37.4011");
-        StationSearchRequest request = new StationSearchRequest(stationSearchValue, stationCoordinates);
+        GeoLocation stationGeoLocation = new GeoLocation("126.978009", "37.4011");
+        StationSearchRequest request = new StationSearchRequest(stationSearchValue, stationGeoLocation);
 
         setMockServer(stationSearchValue, "odsay/error8.json");
 
@@ -99,8 +99,8 @@ class OdsayBusClientTest {
     @Test
     void errorCode9() throws IOException {
         String stationSearchValue = "";
-        Coordinates stationCoordinates = new Coordinates("126.978009", "37.4011");
-        StationSearchRequest request = new StationSearchRequest(stationSearchValue, stationCoordinates);
+        GeoLocation stationGeoLocation = new GeoLocation("126.978009", "37.4011");
+        StationSearchRequest request = new StationSearchRequest(stationSearchValue, stationGeoLocation);
 
         setMockServer(stationSearchValue, "odsay/error9.json");
 
@@ -116,8 +116,8 @@ class OdsayBusClientTest {
     @Test
     void errorCode500() throws IOException {
         String stationSearchValue = "";
-        Coordinates stationCoordinates = new Coordinates("126.978009", "37.4011");
-        StationSearchRequest request = new StationSearchRequest(stationSearchValue, stationCoordinates);
+        GeoLocation stationGeoLocation = new GeoLocation("126.978009", "37.4011");
+        StationSearchRequest request = new StationSearchRequest(stationSearchValue, stationGeoLocation);
 
         setMockServer(stationSearchValue, "odsay/error500.json");
 
