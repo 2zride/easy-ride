@@ -76,7 +76,7 @@ class StationInfoMapperTest {
                 .isInstanceOf(RuntimeException.class);
     }
 
-    public JsonNode readJsonFileAsNode(String path) throws IOException {
+    private JsonNode readJsonFileAsNode(String path) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         ClassPathResource resource = new ClassPathResource(path);
         try (InputStream inputStream = resource.getInputStream()) {
