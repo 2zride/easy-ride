@@ -19,7 +19,7 @@ import org.springframework.core.io.ClassPathResource;
 class StationSearchResponseDeserializerTest {
 
     @Test
-    void 성공_응답의_경우_응답값만_존재한다e() throws IOException {
+    void 성공_응답의_경우_응답값만_존재한다() throws IOException {
         StationSearchResponseDeserializer customDeserializer = new StationSearchResponseDeserializer();
         DeserializationContext mockedContext = mock(DeserializationContext.class);
         JsonParser successResponse = getJsonParserByResponsePath("odsay/success.json");
@@ -27,6 +27,7 @@ class StationSearchResponseDeserializerTest {
         StationSearchResponse deserializedResponse = customDeserializer.deserialize(successResponse, mockedContext);
 
         assertAll(
+                () -> assertThat(deserializedResponse.success()).isTrue(),
                 () -> assertThat(deserializedResponse.code()).isNotPresent(),
                 () -> assertThat(deserializedResponse.message()).isNotPresent(),
                 () -> assertThat(deserializedResponse.searchResult()).isPresent()
@@ -35,18 +36,14 @@ class StationSearchResponseDeserializerTest {
 
     @ParameterizedTest
     @ValueSource(strings = {"odsay/error.json", "odsay/error500.json"})
-    void 실패_응답의_경우_에러_코드와_에러_메시지가_바인딩된다(String errorResponsePath) throws IOException {
+    void 실패_응답의_경우_에러로_역직렬화된다(String errorResponsePath) throws IOException {
         StationSearchResponseDeserializer customDeserializer = new StationSearchResponseDeserializer();
         DeserializationContext mockedContext = mock(DeserializationContext.class);
         JsonParser successResponse = getJsonParserByResponsePath(errorResponsePath);
 
         StationSearchResponse deserializedResponse = customDeserializer.deserialize(successResponse, mockedContext);
 
-        assertAll(
-                () -> assertThat(deserializedResponse.code()).isPresent(),
-                () -> assertThat(deserializedResponse.message()).isPresent(),
-                () -> assertThat(deserializedResponse.searchResult()).isPresent()
-        );
+        assertThat(deserializedResponse.success()).isFalse();
     }
 
     private JsonParser getJsonParserByResponsePath(String path) throws IOException {
