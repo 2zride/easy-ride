@@ -1,0 +1,87 @@
+{
+  "result": {
+    "count": 1,
+    "lane": [
+      {
+        "stationClass": 1,
+        "stationID": 185660,
+        "stationName": "인덕원역1번출구",
+        "x": 126.978009,
+        "y": 37.4011,
+        "busOnlyCentralLane": 0,
+        "busList": [
+          {
+            "busID": 5069,
+            "type": 1,
+            "busNo": "103"
+          },
+          {
+            "busID": 6004,
+            "type": 1,
+            "busNo": "83"
+          },
+          {
+            "busID": 6012,
+            "type": 1,
+            "busNo": "80"
+          },
+          {
+            "busID": 6014,
+            "type": 1,
+            "busNo": "1-1"
+          },
+          {
+            "busID": 9604,
+            "type": 4,
+            "busNo": "7002"
+          },
+          {
+            "busID": 10095,
+            "type": 4,
+            "busNo": "1303"
+          },
+          {
+            "busID": 18902,
+            "type": 3,
+            "busNo": "13"
+          },
+          {
+            "busID": 18907,
+            "type": 3,
+            "busNo": "06-2"
+          },
+          {
+            "busID": 18918,
+            "type": 3,
+            "busNo": "05-1"
+          },
+          {
+            "busID": 18921,
+            "type": 3,
+            "busNo": "10"
+          },
+          {
+            "busID": 18925,
+            "type": 3,
+            "busNo": "05"
+          },
+          {
+            "busID": 18933,
+            "type": 3,
+            "busNo": "06-1(A)"
+          },
+          {
+            "busID": 18935,
+            "type": 3,
+            "busNo": "06"
+          },
+          {
+            "busID": 2804430,
+            "type": 4,
+            "busNo": "7200"
+          }
+        ]
+      }
+    ]
+  }
+}
