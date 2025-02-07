@@ -1,6 +1,8 @@
 package com.easyride.subway.client;
 
 import com.easyride.subway.client.dto.OdsaySearchStationResponse;
+import com.easyride.subway.domain.SubwayStation;
+import java.util.List;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -17,11 +19,15 @@ public class OdsaySubwayClient {
         this.restClient = restClientBuilder.build();
     }
 
-    public OdsaySearchStationResponse searchStation(String stationName) {
-        return restClient.get()
+    public List<SubwayStation> searchStation(String stationName) {
+        OdsaySearchStationResponse response = restClient.get()
                 .uri(makeSearchStationUri(stationName))
                 .retrieve()
                 .body(OdsaySearchStationResponse.class);
+        if (response.isError()) {
+            throw new RuntimeException("오디세이 API 호출 과정에서 예외가 발생했습니다."); // TODO 커스텀 예외로 변경
+        }
+        return response.toDomains();
     }
 
     private String makeSearchStationUri(String stationName) {

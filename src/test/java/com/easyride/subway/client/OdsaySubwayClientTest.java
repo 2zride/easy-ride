@@ -1,6 +1,7 @@
 package com.easyride.subway.client;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
@@ -8,7 +9,7 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 
 import com.easyride.global.config.OdsayConfig;
 import com.easyride.global.config.OdsayProperty;
-import com.easyride.subway.client.dto.OdsaySearchStationResponse;
+import com.easyride.subway.domain.SubwayStation;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -43,67 +44,65 @@ class OdsaySubwayClientTest {
     }
 
     @Test
-    void 지하철역_이름으로_지하철역_상세정보를_조회한다() throws IOException {
+    void 지하철역_이름으로_지하철역_상세정보조회에_성공하면_성공응답을_반환한다() throws IOException {
         // given
         String responseBody = readResourceFile("odsay/success/search-station.json");
         configureMockServer(responseBody);
 
         // when
-        OdsaySearchStationResponse response = subwayClient.searchStation("오이도");
+        List<SubwayStation> subwayStations = subwayClient.searchStation("오이도");
 
         // then
-        List<Integer> types = response.stationTypes();
+        List<Integer> subwayLines = subwayStations.stream()
+                .map(SubwayStation::getLine)
+                .toList();
         assertAll(
-                () -> assertThat(types).containsExactlyInAnyOrder(4, 116), // 4호선, 수인분당선
-                () -> assertThat(response.isError()).isFalse(),
+                () -> assertThat(subwayLines).containsExactlyInAnyOrder(4, 116), // 4호선, 수인분당선
                 () -> mockServer.verify()
         );
     }
 
     @Test
-    void 오디세이가_에러500를_반환하면_에러응답을_반환한다() throws IOException {
+    void 오디세이가_에러500를_반환하면_예외를_반환한다() throws IOException {
         // given
         String responseBody = readResourceFile("odsay/error/error500.json");
         configureMockServer(responseBody);
 
-        // when
-        OdsaySearchStationResponse response = subwayClient.searchStation("오이도");
-
-        // then
+        // when & then
         assertAll(
-                () -> assertThat(response.isError()).isTrue(),
+                () -> assertThatThrownBy(() -> subwayClient.searchStation("오이도"))
+                        .isInstanceOf(RuntimeException.class)
+                        .hasMessage("오디세이 API 호출 과정에서 예외가 발생했습니다."),
                 () -> mockServer.verify()
         );
     }
 
     @Test
-    void 오디세이가_에러8를_반환하면_에러응답을_반환한다() throws IOException {
+    void 오디세이가_에러8를_반환하면_예외를_반환한다() throws IOException {
         // given
         String responseBody = readResourceFile("odsay/error/error8.json");
         configureMockServer(responseBody);
 
-        // when
-        OdsaySearchStationResponse response = subwayClient.searchStation("오이도");
-
-        // then
+        // when & then
         assertAll(
-                () -> assertThat(response.isError()).isTrue(),
+                () -> assertThatThrownBy(() -> subwayClient.searchStation("오이도"))
+                        .isInstanceOf(RuntimeException.class)
+                        .hasMessage("오디세이 API 호출 과정에서 예외가 발생했습니다."),
                 () -> mockServer.verify()
         );
     }
 
     @Test
-    void 오디세이가_에러9를_반환하면_에러응답을_반환한다() throws IOException {
+    void 오디세이가_에러9를_반환하면_예외를_반환한다() throws IOException {
         // given
         String responseBody = readResourceFile("odsay/error/error9.json");
         configureMockServer(responseBody);
 
-        // when
-        OdsaySearchStationResponse response = subwayClient.searchStation("오이도");
-
-        // then
+        // when & then
         assertAll(
-                () -> assertThat(response.isError()).isTrue(),
+                () -> assertThatThrownBy(() -> subwayClient.searchStation("오이도"))
+                        .isInstanceOf(RuntimeException.class)
+                        .hasMessage("오디세이 API 호출 과정에서 예외가 발생했습니다."),
                 () -> mockServer.verify()
         );
     }

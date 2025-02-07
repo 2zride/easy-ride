@@ -1,5 +1,6 @@
 package com.easyride.subway.client.dto;
 
+import com.easyride.subway.domain.SubwayStation;
 import java.util.List;
 
 public class OdsaySearchStationResponse extends OdsayResponse {
@@ -11,10 +12,10 @@ public class OdsaySearchStationResponse extends OdsayResponse {
         this.result = result;
     }
 
-    public List<Integer> stationTypes() {
+    public List<SubwayStation> toDomains() {
         List<StationDetail> stations = result.station();
         return stations.stream()
-                .map(StationDetail::type)
+                .map(station -> new SubwayStation(station.stationId, station.stationName, station.type))
                 .toList();
     }
 
