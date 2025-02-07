@@ -1,9 +1,9 @@
 package com.easyride.subway.service;
 
 import com.easyride.subway.client.OdsaySubwayClient;
-import com.easyride.subway.domain.SubwayStation;
+import com.easyride.subway.domain.NearSubwayStations;
+import com.easyride.subway.domain.SubwayStations;
 import com.easyride.subway.service.dto.NearSubwayStationsResponse;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,17 +14,9 @@ public class SubwayService {
     private final OdsaySubwayClient subwayClient;
 
     public NearSubwayStationsResponse findNearSubwayStations(String stationName, int stationLine) {
-        List<SubwayStation> searchStations = subwayClient.searchStation(stationName);
-        if (searchStations.isEmpty()) {
-            throw new RuntimeException("유효하지 않은 이름의 지하철역입니다.");
-        }
-        String searchStationId = searchStations.stream()
-                .filter(searchStation -> searchStation.getLine() == stationLine)
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("유효하지 않은 호선의 지하철역입니다."))
-                .getId();
-
-        List<SubwayStation> prevNextStation = subwayClient.fetchStationInfo(searchStationId);
-        return new NearSubwayStationsResponse(prevNextStation);
+        SubwayStations searchStations = subwayClient.searchStation(stationName);
+        String searchStationId = searchStations.fetchStationIdByStationLine(stationLine);
+        NearSubwayStations nearStations = subwayClient.fetchStationInfo(searchStationId);
+        return new NearSubwayStationsResponse(nearStations);
     }
 }

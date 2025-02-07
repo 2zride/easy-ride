@@ -1,8 +1,8 @@
 package com.easyride.subway.client.dto;
 
+import com.easyride.subway.domain.NearSubwayStations;
 import com.easyride.subway.domain.SubwayStation;
 import java.util.List;
-import java.util.stream.Stream;
 
 public class OdsayStationInfoResponse extends OdsayResponse {
 
@@ -13,12 +13,12 @@ public class OdsayStationInfoResponse extends OdsayResponse {
         this.result = result;
     }
 
-    public List<SubwayStation> toDomain() {
-        StationDetail prevStation = result.prevObj().get(0);
-        StationDetail nextStation = result.nextObj().get(0);
-        return Stream.of(prevStation, nextStation)
-                .map(station -> new SubwayStation(station.stationId, station.stationName, station.type))
-                .toList();
+    public NearSubwayStations toDomain() {
+        StationDetail prev = result.prevObj().get(0);
+        StationDetail next = result.nextObj().get(0);
+        SubwayStation prevStation = new SubwayStation(prev.stationId, prev.stationName, prev.type);
+        SubwayStation nextStation = new SubwayStation(next.stationId, next.stationName, next.type);
+        return new NearSubwayStations(prevStation, nextStation);
     }
 
     private record SuccessDetail(List<StationDetail> prevObj,

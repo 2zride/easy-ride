@@ -1,19 +1,18 @@
 package com.easyride.subway.client;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
 import com.easyride.global.config.OdsayConfig;
 import com.easyride.global.config.OdsayProperty;
-import com.easyride.subway.domain.SubwayStation;
+import com.easyride.subway.domain.SubwayStations;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,26 +43,24 @@ class OdsaySubwayClientTest {
     }
 
     @Test
-    void 지하철역_이름으로_지하철역_상세정보조회에_성공하면_성공응답을_반환한다() throws IOException {
+    void 지하철역_이름으로_지하철역_상세정보조회에_성공하면_도메인을_반환한다() throws IOException {
         // given
         String responseBody = readResourceFile("odsay/success/search-station.json");
         configureMockServer(responseBody);
 
         // when
-        List<SubwayStation> subwayStations = subwayClient.searchStation("오이도");
+        SubwayStations subwayStations = subwayClient.searchStation("오이도");
 
         // then
-        List<Integer> subwayLines = subwayStations.stream()
-                .map(SubwayStation::getLine)
-                .toList();
         assertAll(
-                () -> assertThat(subwayLines).containsExactlyInAnyOrder(4, 116), // 4호선, 수인분당선
+                () -> assertDoesNotThrow(() -> subwayStations.fetchStationIdByStationLine(4)),
+                () -> assertDoesNotThrow(() -> subwayStations.fetchStationIdByStationLine(116)),
                 () -> mockServer.verify()
         );
     }
 
     @Test
-    void 오디세이가_에러500를_반환하면_예외를_반환한다() throws IOException {
+    void 오디세이가_에러_500를_반환하면_예외를_반환한다() throws IOException {
         // given
         String responseBody = readResourceFile("odsay/error/error500.json");
         configureMockServer(responseBody);
@@ -78,7 +75,7 @@ class OdsaySubwayClientTest {
     }
 
     @Test
-    void 오디세이가_에러8를_반환하면_예외를_반환한다() throws IOException {
+    void 오디세이가_에러_8를_반환하면_예외를_반환한다() throws IOException {
         // given
         String responseBody = readResourceFile("odsay/error/error8.json");
         configureMockServer(responseBody);
@@ -93,7 +90,7 @@ class OdsaySubwayClientTest {
     }
 
     @Test
-    void 오디세이가_에러9를_반환하면_예외를_반환한다() throws IOException {
+    void 오디세이가_에러_9를_반환하면_예외를_반환한다() throws IOException {
         // given
         String responseBody = readResourceFile("odsay/error/error9.json");
         configureMockServer(responseBody);

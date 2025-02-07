@@ -2,8 +2,8 @@ package com.easyride.subway.client;
 
 import com.easyride.subway.client.dto.OdsaySearchStationResponse;
 import com.easyride.subway.client.dto.OdsayStationInfoResponse;
-import com.easyride.subway.domain.SubwayStation;
-import java.util.List;
+import com.easyride.subway.domain.NearSubwayStations;
+import com.easyride.subway.domain.SubwayStations;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -21,7 +21,7 @@ public class OdsaySubwayClient {
         this.restClient = restClientBuilder.build();
     }
 
-    public List<SubwayStation> searchStation(String stationName) {
+    public SubwayStations searchStation(String stationName) {
         OdsaySearchStationResponse response = restClient.get()
                 .uri(makeSearchStationUri(stationName))
                 .retrieve()
@@ -41,7 +41,7 @@ public class OdsaySubwayClient {
                 .toUriString();
     }
 
-    public List<SubwayStation> fetchStationInfo(String stationId) {
+    public NearSubwayStations fetchStationInfo(String stationId) {
         OdsayStationInfoResponse response = restClient.get()
                 .uri(makeStationInfoUri(stationId))
                 .retrieve()
