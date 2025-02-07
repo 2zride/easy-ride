@@ -1,0 +1,49 @@
+{
+  "result": {
+    "totalCityList": {
+      "includeCity": [
+        {
+          "cityName": "서울",
+          "CID": 1000
+        }
+      ]
+    },
+    "totalCount": 2,
+    "station": [
+      {
+        "stationClass": 2,
+        "stationName": "오이도",
+        "stationID": 456,
+        "x": 126.73845,
+        "y": 37.361785,
+        "CID": 1000,
+        "cityName": "서울",
+        "arsID": "456",
+        "do": "경기도",
+        "gu": "시흥시",
+        "dong": "정왕동",
+        "type": 4,
+        "laneName": "수도권 4호선",
+        "laneCity": "수도권",
+        "ebid": "456"
+      },
+      {
+        "stationClass": 2,
+        "stationName": "오이도",
+        "stationID": 11121,
+        "x": 126.738805,
+        "y": 37.362651,
+        "CID": 1000,
+        "cityName": "서울",
+        "arsID": "K258",
+        "do": "경기도",
+        "gu": "시흥시",
+        "dong": "정왕동",
+        "type": 116,
+        "laneName": "수도권 수인.분당선",
+        "laneCity": "수도권",
+        "ebid": "K258"
+      }
+    ]
+  }
+}

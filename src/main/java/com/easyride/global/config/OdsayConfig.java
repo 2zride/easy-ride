@@ -21,20 +21,19 @@ public class OdsayConfig {
     private final OdsayProperty property;
 
     @Bean
-    public RestClient odsayRestClient() {
+    public RestClient.Builder odsayRestClientBuilder() {
         return RestClient.builder()
-                .baseUrl(makeBaseUri())
-                .requestFactory(odsayRequestFactory())
-                .build();
+                .baseUrl(baseUri())
+                .requestFactory(requestFactory());
     }
 
-    private String makeBaseUri() {
+    private String baseUri() {
         return UriComponentsBuilder.fromUriString(property.baseUrl())
                 .queryParam("apiKey", property.apiKey())
                 .toUriString();
     }
 
-    private ClientHttpRequestFactory odsayRequestFactory() {
+    private ClientHttpRequestFactory requestFactory() {
         SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
         requestFactory.setConnectTimeout(DEFAULT_CONNECTION_TIMEOUT);
         requestFactory.setReadTimeout(DEFAULT_READ_TIMEOUT);

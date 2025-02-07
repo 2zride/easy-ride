@@ -1,12 +1,10 @@
 package com.easyride.subway.client;
 
-import com.easyride.subway.client.dto.OdsaySearchStationSuccessResponse;
-import lombok.RequiredArgsConstructor;
+import com.easyride.subway.client.dto.OdsaySearchStationResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.util.UriComponentsBuilder;
 
-@RequiredArgsConstructor
 @Component
 public class OdsaySubwayClient {
 
@@ -15,11 +13,15 @@ public class OdsaySubwayClient {
 
     private final RestClient restClient;
 
-    public OdsaySearchStationSuccessResponse searchStation(String stationName) {
+    public OdsaySubwayClient(RestClient.Builder restClientBuilder) {
+        this.restClient = restClientBuilder.build();
+    }
+
+    public OdsaySearchStationResponse searchStation(String stationName) {
         return restClient.get()
                 .uri(makeSearchStationUri(stationName))
                 .retrieve()
-                .body(OdsaySearchStationSuccessResponse.class);
+                .body(OdsaySearchStationResponse.class);
     }
 
     private String makeSearchStationUri(String stationName) {
