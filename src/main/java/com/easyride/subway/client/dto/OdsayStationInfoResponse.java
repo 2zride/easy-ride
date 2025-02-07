@@ -2,25 +2,27 @@ package com.easyride.subway.client.dto;
 
 import com.easyride.subway.domain.SubwayStation;
 import java.util.List;
+import java.util.stream.Stream;
 
-public class OdsaySearchStationResponse extends OdsayResponse {
+public class OdsayStationInfoResponse extends OdsayResponse {
 
     private final SuccessDetail result;
 
-    public OdsaySearchStationResponse(List<ErrorDetail> error, SuccessDetail result) {
+    public OdsayStationInfoResponse(List<ErrorDetail> error, SuccessDetail result) {
         super(error);
         this.result = result;
     }
 
     public List<SubwayStation> toDomain() {
-        List<StationDetail> stations = result.station();
-        return stations.stream()
+        StationDetail prevStation = result.prevObj().get(0);
+        StationDetail nextStation = result.nextObj().get(0);
+        return Stream.of(prevStation, nextStation)
                 .map(station -> new SubwayStation(station.stationId, station.stationName, station.type))
                 .toList();
     }
 
-    private record SuccessDetail(Integer totalCount,
-                                 List<StationDetail> station) {
+    private record SuccessDetail(List<StationDetail> prevObj,
+                                 List<StationDetail> nextObj) {
     }
 
     private record StationDetail(String stationName,
