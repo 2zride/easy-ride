@@ -1,9 +1,11 @@
 package com.easyride.subway.client;
 
+import com.easyride.global.exception.EasyRideException;
 import com.easyride.subway.client.dto.OdsaySearchStationResponse;
 import com.easyride.subway.client.dto.OdsayStationInfoResponse;
 import com.easyride.subway.domain.NearSubwayStations;
 import com.easyride.subway.domain.SubwayStations;
+import com.easyride.subway.exception.SubwayErrorCode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -27,7 +29,7 @@ public class OdsaySubwayClient {
                 .retrieve()
                 .body(OdsaySearchStationResponse.class);
         if (response.isError()) {
-            throw new RuntimeException("오디세이 API 호출 과정에서 예외가 발생했습니다."); // TODO 커스텀 예외로 변경
+            throw new EasyRideException(SubwayErrorCode.ODSAY_API_ERROR);
         }
         return response.toDomain();
     }
@@ -47,7 +49,7 @@ public class OdsaySubwayClient {
                 .retrieve()
                 .body(OdsayStationInfoResponse.class);
         if (response.isError()) {
-            throw new RuntimeException("오디세이 API 호출 과정에서 예외가 발생했습니다."); // TODO 커스텀 예외로 변경
+            throw new EasyRideException(SubwayErrorCode.ODSAY_API_ERROR);
         }
         return response.toDomain();
     }

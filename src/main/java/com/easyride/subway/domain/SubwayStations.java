@@ -1,5 +1,7 @@
 package com.easyride.subway.domain;
 
+import com.easyride.global.exception.EasyRideException;
+import com.easyride.subway.exception.SubwayErrorCode;
 import java.util.List;
 
 public class SubwayStations {
@@ -8,7 +10,7 @@ public class SubwayStations {
 
     public SubwayStations(List<SubwayStation> stations) {
         if (stations.isEmpty()) {
-            throw new RuntimeException("해당되는 지하철역이 없습니다.");
+            throw new EasyRideException(SubwayErrorCode.INVALID_STATION);
         }
         this.stations = stations;
     }
@@ -17,7 +19,7 @@ public class SubwayStations {
         return stations.stream()
                 .filter(station -> station.getLine() == stationLine)
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("유효하지 않은 호선의 지하철역입니다."))
+                .orElseThrow(() -> new EasyRideException(SubwayErrorCode.INVALID_STATION))
                 .getId();
     }
 }

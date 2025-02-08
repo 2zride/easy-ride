@@ -9,6 +9,7 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 
 import com.easyride.global.config.OdsayConfig;
 import com.easyride.global.config.OdsayProperty;
+import com.easyride.global.exception.EasyRideException;
 import com.easyride.subway.domain.SubwayStations;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -68,7 +69,7 @@ class OdsaySubwayClientTest {
         // when & then
         assertAll(
                 () -> assertThatThrownBy(() -> subwayClient.searchStation("오이도"))
-                        .isInstanceOf(RuntimeException.class)
+                        .isInstanceOf(EasyRideException.class)
                         .hasMessage("오디세이 API 호출 과정에서 예외가 발생했습니다."),
                 () -> mockServer.verify()
         );
@@ -83,7 +84,7 @@ class OdsaySubwayClientTest {
         // when & then
         assertAll(
                 () -> assertThatThrownBy(() -> subwayClient.searchStation("오이도"))
-                        .isInstanceOf(RuntimeException.class)
+                        .isInstanceOf(EasyRideException.class)
                         .hasMessage("오디세이 API 호출 과정에서 예외가 발생했습니다."),
                 () -> mockServer.verify()
         );
@@ -98,7 +99,7 @@ class OdsaySubwayClientTest {
         // when & then
         assertAll(
                 () -> assertThatThrownBy(() -> subwayClient.searchStation("오이도"))
-                        .isInstanceOf(RuntimeException.class)
+                        .isInstanceOf(EasyRideException.class)
                         .hasMessage("오디세이 API 호출 과정에서 예외가 발생했습니다."),
                 () -> mockServer.verify()
         );
