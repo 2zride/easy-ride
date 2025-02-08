@@ -2,6 +2,7 @@ package com.easyride.subway.client.dto;
 
 import com.easyride.subway.domain.NearSubwayStations;
 import com.easyride.subway.domain.SubwayStation;
+import com.fasterxml.jackson.annotation.JsonAlias;
 import java.util.List;
 
 public class OdsayStationInfoResponse extends OdsayResponse {
@@ -14,19 +15,35 @@ public class OdsayStationInfoResponse extends OdsayResponse {
     }
 
     public NearSubwayStations toDomain() {
-        StationDetail prev = result.prevObj().get(0);
-        StationDetail next = result.nextObj().get(0);
-        SubwayStation prevStation = new SubwayStation(prev.stationId, prev.stationName, prev.type);
-        SubwayStation nextStation = new SubwayStation(next.stationId, next.stationName, next.type);
+        List<StationDetail> prev = result.prevObj().station;
+        List<StationDetail> next = result.nextObj().station;
+        SubwayStation prevStation = toSubwayStation(prev);
+        SubwayStation nextStation = toSubwayStation(next);
         return new NearSubwayStations(prevStation, nextStation);
     }
 
-    private record SuccessDetail(List<StationDetail> prevObj,
-                                 List<StationDetail> nextObj) {
+    private SubwayStation toSubwayStation(List<StationDetail> stationDetail) {
+        if (stationDetail == null) {
+            return null;
+        }
+        StationDetail station = stationDetail.get(0);
+        return new SubwayStation(station.stationId, station.stationName, station.type);
     }
 
-    private record StationDetail(String stationName,
-                                 String stationId,
-                                 Integer type) {
+    private record SuccessDetail(
+            @JsonAlias("prevOBJ")
+            StationsDetail prevObj,
+            @JsonAlias("nextOBJ")
+            StationsDetail nextObj) {
+    }
+
+    private record StationsDetail(
+            List<StationDetail> station) {
+    }
+
+    private record StationDetail(
+            String stationName,
+            String stationId,
+            Integer type) {
     }
 }
