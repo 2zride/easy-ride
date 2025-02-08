@@ -26,9 +26,6 @@ import org.springframework.web.client.RestClient;
 class SubwayServiceTest {
 
     @Autowired
-    OdsayUriGenerator uriGenerator;
-
-    @Autowired
     RestClient.Builder restClientBuilder;
 
     MockRestServiceServer mockServer;
@@ -36,6 +33,9 @@ class SubwayServiceTest {
     OdsaySubwayClient subwayClient;
 
     SubwayService subwayService;
+
+    @Autowired
+    OdsayUriGenerator uriGenerator;
 
     @BeforeEach
     void setUp() {
