@@ -27,7 +27,7 @@ public class OdsaySubwayClient {
         OdsaySearchStationResponse response = restClient.get()
                 .uri(makeSearchStationUri(stationName))
                 .exchange((req, res) -> responseConverter.convert(res, OdsaySearchStationResponse.class));
-        return response.toDomain();
+        return response.toSubwayStations();
     }
 
     private String makeSearchStationUri(String stationName) {
@@ -43,7 +43,7 @@ public class OdsaySubwayClient {
         OdsayStationInfoResponse response = restClient.get()
                 .uri(makeStationInfoUri(stationId))
                 .exchange((req, res) -> responseConverter.convert(res, OdsayStationInfoResponse.class));
-        return response.toDomain();
+        return response.toNearSubwayStations();
     }
 
     private String makeStationInfoUri(String stationId) {

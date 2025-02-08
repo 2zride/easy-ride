@@ -13,7 +13,8 @@ public class OdsayResponse {
         return error != null;
     }
 
-    protected record ErrorDetail(String code,
-                                 String message) {
+    protected record ErrorDetail(
+            String code,
+            String message) {
     }
 }

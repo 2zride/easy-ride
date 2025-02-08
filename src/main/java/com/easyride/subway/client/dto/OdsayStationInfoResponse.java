@@ -14,7 +14,7 @@ public class OdsayStationInfoResponse extends OdsayResponse {
         this.result = result;
     }
 
-    public NearSubwayStations toDomain() {
+    public NearSubwayStations toNearSubwayStations() {
         List<StationDetail> prev = result.prevObj().station;
         List<StationDetail> next = result.nextObj().station;
         SubwayStation prevStation = toSubwayStation(prev);
@@ -42,8 +42,9 @@ public class OdsayStationInfoResponse extends OdsayResponse {
     }
 
     private record StationDetail(
-            String stationName,
+            @JsonAlias("stationID")
             String stationId,
+            String stationName,
             Integer type) {
     }
 }
