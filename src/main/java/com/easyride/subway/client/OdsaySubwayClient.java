@@ -1,11 +1,9 @@
 package com.easyride.subway.client;
 
-import com.easyride.global.exception.EasyRideException;
 import com.easyride.subway.client.dto.OdsaySearchStationResponse;
 import com.easyride.subway.client.dto.OdsayStationInfoResponse;
 import com.easyride.subway.domain.NearSubwayStations;
 import com.easyride.subway.domain.SubwayStations;
-import com.easyride.subway.exception.SubwayErrorCode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -18,19 +16,17 @@ public class OdsaySubwayClient {
     private static final int STATION_CLASS_OF_SUBWAY = 2;
 
     private final RestClient restClient;
+    private final OdsayResponseConverter responseConverter;
 
     public OdsaySubwayClient(RestClient.Builder restClientBuilder) {
         this.restClient = restClientBuilder.build();
+        this.responseConverter = OdsayResponseConverter.getInstance();
     }
 
     public SubwayStations searchStation(String stationName) {
         OdsaySearchStationResponse response = restClient.get()
                 .uri(makeSearchStationUri(stationName))
-                .retrieve()
-                .body(OdsaySearchStationResponse.class);
-        if (response.isError()) {
-            throw new EasyRideException(SubwayErrorCode.ODSAY_API_ERROR);
-        }
+                .exchange((req, res) -> responseConverter.convert(res, OdsaySearchStationResponse.class));
         return response.toDomain();
     }
 
@@ -46,11 +42,7 @@ public class OdsaySubwayClient {
     public NearSubwayStations fetchStationInfo(String stationId) {
         OdsayStationInfoResponse response = restClient.get()
                 .uri(makeStationInfoUri(stationId))
-                .retrieve()
-                .body(OdsayStationInfoResponse.class);
-        if (response.isError()) {
-            throw new EasyRideException(SubwayErrorCode.ODSAY_API_ERROR);
-        }
+                .exchange((req, res) -> responseConverter.convert(res, OdsayStationInfoResponse.class));
         return response.toDomain();
     }
 

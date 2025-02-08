@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withBadRequest;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
 import com.easyride.global.config.OdsayConfig;
@@ -47,7 +48,7 @@ class OdsaySubwayClientTest {
     void 지하철역_이름으로_지하철역_상세정보조회에_성공하면_도메인을_반환한다() throws IOException {
         // given
         String responseBody = readResourceFile("odsay/success/search-station.json");
-        configureMockServer(responseBody);
+        configure200MockServer(responseBody);
 
         // when
         SubwayStations subwayStations = subwayClient.searchStation("오이도");
@@ -64,7 +65,7 @@ class OdsaySubwayClientTest {
     void 오디세이가_에러_500를_반환하면_예외를_반환한다() throws IOException {
         // given
         String responseBody = readResourceFile("odsay/error/error500.json");
-        configureMockServer(responseBody);
+        configure200MockServer(responseBody);
 
         // when & then
         assertAll(
@@ -79,7 +80,7 @@ class OdsaySubwayClientTest {
     void 오디세이가_에러_8를_반환하면_예외를_반환한다() throws IOException {
         // given
         String responseBody = readResourceFile("odsay/error/error8.json");
-        configureMockServer(responseBody);
+        configure200MockServer(responseBody);
 
         // when & then
         assertAll(
@@ -94,7 +95,7 @@ class OdsaySubwayClientTest {
     void 오디세이가_에러_9를_반환하면_예외를_반환한다() throws IOException {
         // given
         String responseBody = readResourceFile("odsay/error/error9.json");
-        configureMockServer(responseBody);
+        configure200MockServer(responseBody);
 
         // when & then
         assertAll(
@@ -105,10 +106,30 @@ class OdsaySubwayClientTest {
         );
     }
 
-    private void configureMockServer(String responseBody) {
+    @Test
+    void 오디세이가_400_에러를_반환하면_예외를_반환한다() {
+        // given
+        configure400MockServer();
+
+        // when & then
+        assertAll(
+                () -> assertThatThrownBy(() -> subwayClient.searchStation("오이도"))
+                        .isInstanceOf(EasyRideException.class)
+                        .hasMessage("오디세이 API 호출 과정에서 예외가 발생했습니다."),
+                () -> mockServer.verify()
+        );
+    }
+
+    private void configure200MockServer(String responseBody) {
         mockServer.expect(requestTo(makeUri()))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withSuccess(responseBody, MediaType.APPLICATION_JSON));
+    }
+
+    private void configure400MockServer() {
+        mockServer.expect(requestTo(makeUri()))
+                .andExpect(method(HttpMethod.GET))
+                .andRespond(withBadRequest());
     }
 
     private String makeUri() {
