@@ -1,0 +1,8 @@
+{
+  "error": [
+    {
+      "code": "-9",
+      "message": "stationName은 필수 파라미터입니다."
+    }
+  ]
+}

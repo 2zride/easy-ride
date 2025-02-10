@@ -1,0 +1,287 @@
+{
+  "result": {
+    "stationName": "오이도",
+    "stationID": 456,
+    "type": 4,
+    "laneName": "수도권 4호선",
+    "laneCity": "수도권",
+    "CityCode": 1000,
+    "x": 126.73845,
+    "y": 37.361785,
+    "exOBJ": {
+      "station": [
+        {
+          "stationName": "오이도",
+          "stationID": 11121,
+          "type": 116,
+          "laneName": "수도권 수인.분당선",
+          "laneCity": "수도권"
+        }
+      ]
+    },
+    "prevOBJ": {
+      "station": [
+        {
+          "stationName": "정왕",
+          "stationID": 455,
+          "type": 4,
+          "laneName": "수도권 4호선",
+          "laneCity": "수도권",
+          "x": 126.743307,
+          "y": 37.351699
+        }
+      ]
+    },
+    "nextOBJ": {},
+    "defaultInfo": {
+      "address": "경기도 시흥시 정왕동 878",
+      "new_address": "경기도 시흥시 역전로 430",
+      "tel": "1544-7788",
+      "lostcenterTel": "1544-7788"
+    },
+    "useInfo": {
+      "platform": 1,
+      "meetingPlace": 0,
+      "restroom": 2,
+      "offDoor": 2,
+      "crossOver": 2,
+      "publicPlace": 0,
+      "handicapCount": 1,
+      "parkingCount": 1,
+      "bicycleCount": 0,
+      "civilCount": 0,
+      "wheelchairLift": 0,
+      "elevator": 1
+    },
+    "exitInfo": {
+      "gate": [
+        {
+          "gateNo": "1",
+          "gateLink": [
+            "송운중학교",
+            "송운초등학교",
+            "냉정초등학교"
+          ],
+          "BUSSTOP": [
+            {
+              "StopID": "113997",
+              "Bus": [
+                {
+                  "BusNo": "30-2",
+                  "Type": "1",
+                  "BlID": "6502",
+                  "BusCityName": "안산"
+                },
+                {
+                  "BusNo": "62",
+                  "Type": "1",
+                  "BlID": "6507",
+                  "BusCityName": "안산"
+                },
+                {
+                  "BusNo": "123",
+                  "Type": "1",
+                  "BlID": "6536",
+                  "BusCityName": "안산"
+                },
+                {
+                  "BusNo": "23",
+                  "Type": "1",
+                  "BlID": "11502",
+                  "BusCityName": "시흥"
+                },
+                {
+                  "BusNo": "26-1",
+                  "Type": "1",
+                  "BlID": "11516",
+                  "BusCityName": "시흥"
+                },
+                {
+                  "BusNo": "99-2",
+                  "Type": "1",
+                  "BlID": "11527",
+                  "BusCityName": "시흥"
+                },
+                {
+                  "BusNo": "99-3",
+                  "Type": "1",
+                  "BlID": "11528",
+                  "BusCityName": "시흥"
+                },
+                {
+                  "BusNo": "11-A-001",
+                  "Type": "1",
+                  "BlID": "11529",
+                  "BusCityName": "시흥"
+                },
+                {
+                  "BusNo": "11-B",
+                  "Type": "1",
+                  "BlID": "11530",
+                  "BusCityName": "시흥"
+                },
+                {
+                  "BusNo": "1",
+                  "Type": "1",
+                  "BlID": "12500",
+                  "BusCityName": "광명"
+                },
+                {
+                  "BusNo": "70",
+                  "Type": "1",
+                  "BlID": "2803257",
+                  "BusCityName": "시흥"
+                },
+                {
+                  "BusNo": "33-1",
+                  "Type": "1",
+                  "BlID": "2823560",
+                  "BusCityName": "시흥"
+                },
+                {
+                  "BusNo": "122",
+                  "Type": "1",
+                  "BlID": "2826928",
+                  "BusCityName": "안산"
+                },
+                {
+                  "BusNo": "790",
+                  "Type": "2",
+                  "BlID": "21171",
+                  "BusCityName": "인천"
+                },
+                {
+                  "BusNo": "790A",
+                  "Type": "2",
+                  "BlID": "2806451",
+                  "BusCityName": "인천"
+                },
+                {
+                  "BusNo": "790B",
+                  "Type": "2",
+                  "BlID": "2806452",
+                  "BusCityName": "인천"
+                }
+              ],
+              "StopName": "오이도역"
+            }
+          ]
+        },
+        {
+          "gateNo": "2",
+          "gateLink": [
+            "함현중학교",
+            "한현초등학교",
+            "함현고등학교",
+            "정왕4동주민센터",
+            "함현상생종합사회복지관"
+          ],
+          "BUSSTOP": [
+            {
+              "StopID": "114000",
+              "Bus": [
+                {
+                  "BusNo": "30-2",
+                  "Type": "1",
+                  "BlID": "6502",
+                  "BusCityName": "안산"
+                },
+                {
+                  "BusNo": "62",
+                  "Type": "1",
+                  "BlID": "6507",
+                  "BusCityName": "안산"
+                },
+                {
+                  "BusNo": "123",
+                  "Type": "1",
+                  "BlID": "6536",
+                  "BusCityName": "안산"
+                },
+                {
+                  "BusNo": "23",
+                  "Type": "1",
+                  "BlID": "11502",
+                  "BusCityName": "시흥"
+                },
+                {
+                  "BusNo": "26-1",
+                  "Type": "1",
+                  "BlID": "11516",
+                  "BusCityName": "시흥"
+                },
+                {
+                  "BusNo": "99-2",
+                  "Type": "1",
+                  "BlID": "11527",
+                  "BusCityName": "시흥"
+                },
+                {
+                  "BusNo": "11-A-001",
+                  "Type": "1",
+                  "BlID": "11529",
+                  "BusCityName": "시흥"
+                },
+                {
+                  "BusNo": "11-B",
+                  "Type": "1",
+                  "BlID": "11530",
+                  "BusCityName": "시흥"
+                },
+                {
+                  "BusNo": "11-C-001",
+                  "Type": "1",
+                  "BlID": "11531",
+                  "BusCityName": "시흥"
+                },
+                {
+                  "BusNo": "1",
+                  "Type": "1",
+                  "BlID": "12500",
+                  "BusCityName": "광명"
+                },
+                {
+                  "BusNo": "70",
+                  "Type": "1",
+                  "BlID": "2803257",
+                  "BusCityName": "시흥"
+                },
+                {
+                  "BusNo": "122",
+                  "Type": "1",
+                  "BlID": "2826928",
+                  "BusCityName": "안산"
+                },
+                {
+                  "BusNo": "790",
+                  "Type": "2",
+                  "BlID": "21171",
+                  "BusCityName": "인천"
+                },
+                {
+                  "BusNo": "790A",
+                  "Type": "2",
+                  "BlID": "2806451",
+                  "BusCityName": "인천"
+                },
+                {
+                  "BusNo": "790B",
+                  "Type": "2",
+                  "BlID": "2806452",
+                  "BusCityName": "인천"
+                }
+              ],
+              "StopName": "오이도역"
+            }
+          ]
+        },
+        {
+          "gateNo": "3",
+          "gateLink": [
+            "시화자연생태학교"
+          ]
+        }
+      ]
+    }
+  }
+}
