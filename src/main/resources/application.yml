@@ -5,3 +5,7 @@ spring:
 odsay:
   base-url: https://api.odsay.com/v1/api
   api-key:
+
+sk:
+  base-url: https://apis.openapi.sk.com/puzzle/subway
+  api-key:
