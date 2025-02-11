@@ -1,4 +1,4 @@
-package com.easyride.global.config;
+package com.easyride.subway.client.sk;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

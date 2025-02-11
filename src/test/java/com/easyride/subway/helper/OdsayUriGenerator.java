@@ -1,6 +1,6 @@
 package com.easyride.subway.helper;
 
-import com.easyride.global.config.OdsayProperty;
+import com.easyride.subway.client.odsay.OdsayProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;

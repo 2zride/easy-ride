@@ -9,8 +9,10 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withBadRequest;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
-import com.easyride.global.config.OdsayConfig;
+import com.easyride.global.config.BaseRestClientTest;
 import com.easyride.global.exception.EasyRideException;
+import com.easyride.subway.client.odsay.OdsayProperty;
+import com.easyride.subway.client.odsay.OdsaySubwayClient;
 import com.easyride.subway.domain.NearSubwayStations;
 import com.easyride.subway.domain.SubwayStation;
 import com.easyride.subway.domain.SubwayStations;
@@ -25,25 +27,22 @@ import org.springframework.boot.test.autoconfigure.web.client.RestClientTest;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.client.MockRestServiceServer;
-import org.springframework.web.client.RestClient;
 
-@RestClientTest({OdsayConfig.class, OdsayUriGenerator.class})
-class OdsaySubwayClientTest {
-
-    @Autowired
-    RestClient.Builder restClientBuilder;
-
-    MockRestServiceServer mockServer;
+@RestClientTest({OdsaySubwayClient.class, OdsayUriGenerator.class})
+class OdsaySubwayClientTest extends BaseRestClientTest {
 
     OdsaySubwayClient subwayClient;
 
     @Autowired
     OdsayUriGenerator uriGenerator;
 
+    @Autowired
+    OdsayProperty property;
+
     @BeforeEach
     void setUp() {
         mockServer = MockRestServiceServer.bindTo(restClientBuilder).build();
-        subwayClient = new OdsaySubwayClient(restClientBuilder);
+        subwayClient = new OdsaySubwayClient(restClientBuilder, property);
     }
 
     @Test

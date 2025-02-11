@@ -9,8 +9,10 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withForbiddenRequest;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
-import com.easyride.global.config.SkConfig;
+import com.easyride.global.config.BaseRestClientTest;
 import com.easyride.global.exception.EasyRideException;
+import com.easyride.subway.client.sk.SkProperty;
+import com.easyride.subway.client.sk.SkSubwayClient;
 import com.easyride.subway.domain.SubwayCarCongestion;
 import com.easyride.subway.domain.SubwayCongestion;
 import com.easyride.subway.helper.SkUriGenerator;
@@ -24,25 +26,22 @@ import org.springframework.boot.test.autoconfigure.web.client.RestClientTest;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.client.MockRestServiceServer;
-import org.springframework.web.client.RestClient;
 
-@RestClientTest({SkConfig.class, SkUriGenerator.class})
-public class SkSubwayClientTest {
-
-    @Autowired
-    RestClient.Builder restClientBuilder;
-
-    MockRestServiceServer mockServer;
+@RestClientTest({SkSubwayClient.class, SkUriGenerator.class})
+public class SkSubwayClientTest extends BaseRestClientTest {
 
     SkSubwayClient subwayClient;
 
     @Autowired
     SkUriGenerator uriGenerator;
 
+    @Autowired
+    SkProperty property;
+
     @BeforeEach
     void setUp() {
         mockServer = MockRestServiceServer.bindTo(restClientBuilder).build();
-        subwayClient = new SkSubwayClient(restClientBuilder);
+        subwayClient = new SkSubwayClient(restClientBuilder, property);
     }
 
     @Test

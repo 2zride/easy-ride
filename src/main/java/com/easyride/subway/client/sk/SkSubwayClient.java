@@ -1,12 +1,14 @@
-package com.easyride.subway.client;
+package com.easyride.subway.client.sk;
 
 import com.easyride.subway.client.dto.SkRealTimeCongestionResponse;
 import com.easyride.subway.domain.SubwayCongestion;
 import java.util.Map;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.util.UriComponentsBuilder;
 
+@EnableConfigurationProperties(SkProperty.class)
 @Component
 public class SkSubwayClient {
 
@@ -15,8 +17,11 @@ public class SkSubwayClient {
     private final RestClient restClient;
     private final SkResponseConverter responseConverter;
 
-    public SkSubwayClient(RestClient.Builder restClientBuilder) { // TODO 두개의 빈 중 하나 선택
-        this.restClient = restClientBuilder.build();
+    public SkSubwayClient(RestClient.Builder restClientBuilder, SkProperty property) {
+        this.restClient = restClientBuilder
+                .baseUrl(property.baseUrl())
+                .defaultHeader("appKey", property.apiKey())
+                .build();
         this.responseConverter = SkResponseConverter.getInstance();
     }
 

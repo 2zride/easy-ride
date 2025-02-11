@@ -1,13 +1,15 @@
-package com.easyride.subway.client;
+package com.easyride.subway.client.odsay;
 
 import com.easyride.subway.client.dto.OdsaySearchStationResponse;
 import com.easyride.subway.client.dto.OdsayStationInfoResponse;
 import com.easyride.subway.domain.NearSubwayStations;
 import com.easyride.subway.domain.SubwayStations;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.util.UriComponentsBuilder;
 
+@EnableConfigurationProperties(OdsayProperty.class)
 @Component
 public class OdsaySubwayClient {
 
@@ -18,9 +20,17 @@ public class OdsaySubwayClient {
     private final RestClient restClient;
     private final OdsayResponseConverter responseConverter;
 
-    public OdsaySubwayClient(RestClient.Builder restClientBuilder) {
-        this.restClient = restClientBuilder.build();
+    public OdsaySubwayClient(RestClient.Builder restClientBuilder, OdsayProperty property) {
+        this.restClient = restClientBuilder
+                .baseUrl(baseUri(property))
+                .build();
         this.responseConverter = OdsayResponseConverter.getInstance();
+    }
+
+    private String baseUri(OdsayProperty property) {
+        return UriComponentsBuilder.fromUriString(property.baseUrl())
+                .queryParam("apiKey", property.apiKey())
+                .toUriString();
     }
 
     public SubwayStations searchStation(String stationName) {

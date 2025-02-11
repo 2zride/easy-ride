@@ -1,6 +1,6 @@
 package com.easyride.subway.helper;
 
-import com.easyride.global.config.SkProperty;
+import com.easyride.subway.client.sk.SkProperty;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

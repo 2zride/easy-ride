@@ -1,4 +1,4 @@
-package com.easyride.subway.client;
+package com.easyride.subway.client.odsay;
 
 import com.easyride.global.exception.EasyRideException;
 import com.easyride.subway.client.dto.OdsayResponse;

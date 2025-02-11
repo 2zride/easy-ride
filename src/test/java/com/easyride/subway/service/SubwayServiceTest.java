@@ -6,9 +6,12 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
-import com.easyride.global.config.OdsayConfig;
-import com.easyride.subway.client.OdsaySubwayClient;
+import com.easyride.global.config.BaseRestClientTest;
+import com.easyride.subway.client.odsay.OdsayProperty;
+import com.easyride.subway.client.odsay.OdsaySubwayClient;
+import com.easyride.subway.client.sk.SkSubwayClient;
 import com.easyride.subway.helper.OdsayUriGenerator;
+import com.easyride.subway.helper.SkUriGenerator;
 import com.easyride.subway.service.dto.NearSubwayStationsResponse;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -20,27 +23,24 @@ import org.springframework.boot.test.autoconfigure.web.client.RestClientTest;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.client.MockRestServiceServer;
-import org.springframework.web.client.RestClient;
 
-@RestClientTest({OdsayConfig.class, OdsayUriGenerator.class})
-class SubwayServiceTest {
-
-    @Autowired
-    RestClient.Builder restClientBuilder;
-
-    MockRestServiceServer mockServer;
-
-    OdsaySubwayClient subwayClient;
+@RestClientTest({OdsaySubwayClient.class, OdsayUriGenerator.class, SkSubwayClient.class, SkUriGenerator.class})
+class SubwayServiceTest extends BaseRestClientTest {
 
     SubwayService subwayService;
+
+    OdsaySubwayClient subwayClient;
 
     @Autowired
     OdsayUriGenerator uriGenerator;
 
+    @Autowired
+    OdsayProperty odsayProperty;
+
     @BeforeEach
     void setUp() {
         mockServer = MockRestServiceServer.bindTo(restClientBuilder).build();
-        subwayClient = new OdsaySubwayClient(restClientBuilder);
+        subwayClient = new OdsaySubwayClient(restClientBuilder, odsayProperty);
         subwayService = new SubwayService(subwayClient);
     }
 

@@ -1,6 +1,6 @@
 package com.easyride.subway.service;
 
-import com.easyride.subway.client.OdsaySubwayClient;
+import com.easyride.subway.client.odsay.OdsaySubwayClient;
 import com.easyride.subway.domain.NearSubwayStations;
 import com.easyride.subway.domain.SubwayStations;
 import com.easyride.subway.service.dto.NearSubwayStationsResponse;
