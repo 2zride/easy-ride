@@ -2,9 +2,6 @@ package com.easyride.subway.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
-import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
 import com.easyride.global.config.BaseRestClientTest;
 import com.easyride.subway.client.odsay.OdsayProperty;
@@ -14,14 +11,10 @@ import com.easyride.subway.helper.OdsayUriGenerator;
 import com.easyride.subway.helper.SkUriGenerator;
 import com.easyride.subway.service.dto.NearSubwayStationsResponse;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.client.RestClientTest;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.client.MockRestServiceServer;
 
 @RestClientTest({OdsaySubwayClient.class, OdsayUriGenerator.class, SkSubwayClient.class, SkUriGenerator.class})
@@ -64,18 +57,5 @@ class SubwayServiceTest extends BaseRestClientTest {
                 () -> assertThat(response.nextStationName()).isEqualTo(""),
                 () -> mockServer.verify()
         );
-    }
-
-    private void configure200MockServer(String requestUri, String responseBody) {
-        mockServer.expect(requestTo(requestUri))
-                .andExpect(method(HttpMethod.GET))
-                .andRespond(withSuccess(responseBody, MediaType.APPLICATION_JSON));
-    }
-
-    private String readResourceFile(String fileName) throws IOException {
-        ClassLoader classLoader = this.getClass().getClassLoader();
-        String resourcePath = classLoader.getResource(fileName).getPath();
-        Path path = Path.of(resourcePath);
-        return Files.readString(path);
     }
 }

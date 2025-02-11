@@ -4,10 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
-import static org.springframework.test.web.client.response.MockRestResponseCreators.withBadRequest;
-import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
 import com.easyride.global.config.BaseRestClientTest;
 import com.easyride.global.exception.EasyRideException;
@@ -18,14 +14,10 @@ import com.easyride.subway.domain.SubwayStation;
 import com.easyride.subway.domain.SubwayStations;
 import com.easyride.subway.helper.OdsayUriGenerator;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.client.RestClientTest;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.client.MockRestServiceServer;
 
 @RestClientTest({OdsaySubwayClient.class, OdsayUriGenerator.class})
@@ -144,24 +136,5 @@ class OdsaySubwayClientTest extends BaseRestClientTest {
                         .hasMessage("오디세이 API 호출 과정에서 예외가 발생했습니다."),
                 () -> mockServer.verify()
         );
-    }
-
-    private void configure200MockServer(String requestUri, String responseBody) {
-        mockServer.expect(requestTo(requestUri))
-                .andExpect(method(HttpMethod.GET))
-                .andRespond(withSuccess(responseBody, MediaType.APPLICATION_JSON));
-    }
-
-    private void configure400MockServer(String requestUri) {
-        mockServer.expect(requestTo(requestUri))
-                .andExpect(method(HttpMethod.GET))
-                .andRespond(withBadRequest());
-    }
-
-    private String readResourceFile(String fileName) throws IOException {
-        ClassLoader classLoader = this.getClass().getClassLoader();
-        String resourcePath = classLoader.getResource(fileName).getPath();
-        Path path = Path.of(resourcePath);
-        return Files.readString(path);
     }
 }
