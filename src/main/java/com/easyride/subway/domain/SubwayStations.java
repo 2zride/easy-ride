@@ -15,9 +15,10 @@ public class SubwayStations {
         this.stations = stations;
     }
 
-    public String fetchStationIdByStationLine(int stationLine) {
+    public String fetchStationIdByStationLine(int stationLineNumber) {
+        StationLine stationLine = StationLine.asStationLine(stationLineNumber);
         return stations.stream()
-                .filter(station -> station.getLine() == stationLine)
+                .filter(station -> station.getLine().equals(stationLine))
                 .findFirst()
                 .orElseThrow(() -> new EasyRideException(SubwayErrorCode.INVALID_STATION))
                 .getId();

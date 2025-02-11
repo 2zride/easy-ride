@@ -8,6 +8,7 @@ import com.easyride.global.config.BaseRestClientTest;
 import com.easyride.global.exception.EasyRideException;
 import com.easyride.subway.client.sk.SkProperty;
 import com.easyride.subway.client.sk.SkSubwayClient;
+import com.easyride.subway.domain.StationLine;
 import com.easyride.subway.domain.SubwayCarCongestion;
 import com.easyride.subway.domain.SubwayCongestion;
 import com.easyride.subway.helper.SkUriGenerator;
@@ -47,7 +48,7 @@ public class SkSubwayClientTest extends BaseRestClientTest {
 
         // then
         assertAll(
-                () -> assertThat(subwayCongestion.getSubwayLine()).isEqualTo(2),
+                () -> assertThat(subwayCongestion.getStationLine()).isEqualTo(StationLine.SEOUL_METRO_2),
                 () -> assertThat(subwayCongestion.getTrainY()).isEqualTo("2207"),
                 () -> assertThat(subwayCongestion.getTrainCongestion()).isEqualTo(57),
                 () -> assertThat(subwayCongestion.getCarCongestions())

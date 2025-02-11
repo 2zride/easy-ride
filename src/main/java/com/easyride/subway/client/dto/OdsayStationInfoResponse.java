@@ -27,7 +27,7 @@ public class OdsayStationInfoResponse extends OdsayResponse {
             return null;
         }
         StationDetail station = stationDetail.get(0);
-        return new SubwayStation(station.stationId, station.stationName, station.type);
+        return SubwayStation.of(station.stationId, station.stationName, station.type);
     }
 
     private record SuccessDetail(
