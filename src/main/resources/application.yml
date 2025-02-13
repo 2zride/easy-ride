@@ -9,3 +9,7 @@ odsay:
 sk:
   base-url: https://apis.openapi.sk.com/puzzle/subway
   api-key:
+
+data-seoul:
+  base-url: http://swopenAPI.seoul.go.kr/api/subway/{apiKey}/json
+  api-key:
