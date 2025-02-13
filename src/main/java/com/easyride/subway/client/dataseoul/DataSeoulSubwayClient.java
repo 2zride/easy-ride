@@ -1,6 +1,8 @@
 package com.easyride.subway.client.dataseoul;
 
 import com.easyride.subway.client.dto.DataSeoulRealTimeTrainPositionResponse;
+import com.easyride.subway.domain.SubwayPosition;
+import java.util.List;
 import java.util.Map;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Component;
@@ -31,10 +33,11 @@ public class DataSeoulSubwayClient {
                 .toUriString();
     }
 
-    public void fetchRealTimeTrainPosition(String subwayName) {
+    public List<SubwayPosition> fetchRealTimeTrainPosition(String subwayName) {
         DataSeoulRealTimeTrainPositionResponse response = restClient.get()
                 .uri(makeRealTimeTrainPositionUri(subwayName))
                 .exchange((req, res) -> responseConverter.convert(res));
+        return response.toSubwayPositions();
     }
 
     private String makeRealTimeTrainPositionUri(String subwayName) {
