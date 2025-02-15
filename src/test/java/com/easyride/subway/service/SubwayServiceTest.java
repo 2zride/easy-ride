@@ -2,51 +2,68 @@ package com.easyride.subway.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.BDDMockito.given;
 
-import com.easyride.global.config.BaseRestClientTest;
-import com.easyride.subway.client.odsay.OdsayProperty;
+import com.easyride.subway.client.dataseoul.DataSeoulSubwayClient;
 import com.easyride.subway.client.odsay.OdsaySubwayClient;
 import com.easyride.subway.client.sk.SkSubwayClient;
-import com.easyride.subway.helper.OdsayUriGenerator;
-import com.easyride.subway.helper.SkUriGenerator;
+import com.easyride.subway.domain.NearSubwayStations;
+import com.easyride.subway.domain.SubwayStation;
+import com.easyride.subway.domain.SubwayStations;
 import com.easyride.subway.service.dto.NearSubwayStationsResponse;
-import java.io.IOException;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.client.RestClientTest;
-import org.springframework.test.web.client.MockRestServiceServer;
+import org.mockito.Mock;
+import org.springframework.boot.test.context.SpringBootTest;
 
-@RestClientTest({OdsaySubwayClient.class, OdsayUriGenerator.class, SkSubwayClient.class, SkUriGenerator.class})
-class SubwayServiceTest extends BaseRestClientTest {
+@SpringBootTest
+class SubwayServiceTest { // TODO ServiceTest 생성
 
     SubwayService subwayService;
 
-    OdsaySubwayClient subwayClient;
+    @Mock
+    OdsaySubwayClient odsaySubwayClient;
 
-    @Autowired
-    OdsayUriGenerator uriGenerator;
+    @Mock
+    DataSeoulSubwayClient dataSeoulSubwayClient;
 
-    @Autowired
-    OdsayProperty odsayProperty;
+    @Mock
+    SkSubwayClient skSubwayClient;
 
     @BeforeEach
     void setUp() {
-        mockServer = MockRestServiceServer.bindTo(restClientBuilder).build();
-        subwayClient = new OdsaySubwayClient(restClientBuilder, odsayProperty);
-        subwayService = new SubwayService(subwayClient);
+        subwayService = new SubwayService(odsaySubwayClient, dataSeoulSubwayClient, skSubwayClient);
     }
 
     @Test
-    void 호선과_이름을_기반으로_양옆의_지하철역을_조회한다() throws IOException {
+    void 호선과_이름을_기반으로_양옆의_지하철역을_조회한다() {
         // given
-        configure200MockServer(
-                uriGenerator.makeSearchStationUri("오이도"),
-                readResourceFile("odsay/success/search-station.json"));
+        given(odsaySubwayClient.searchStation("봉천"))
+                .willReturn(new SubwayStations(List.of(SubwayStation.of("229", "봉천", 2))));
+        given(odsaySubwayClient.fetchStationInfo("229"))
+                .willReturn(new NearSubwayStations(
+                        SubwayStation.of("228", "서울대입구", 2),
+                        SubwayStation.of("230", "신림", 2)));
 
-        configure200MockServer(
-                uriGenerator.makeStationInfoUri("456"),
-                readResourceFile("odsay/success/station-info.json"));
+        // when
+        NearSubwayStationsResponse response = subwayService.findNearSubwayStations("봉천", 2);
+
+        // then
+        assertAll(
+                () -> assertThat(response.prevStationName()).isEqualTo("서울대입구"),
+                () -> assertThat(response.nextStationName()).isEqualTo("신림")
+        );
+    }
+
+    @Test
+    void 호선과_이름을_기반으로_양옆의_지하철역을_조회할_때_종점일_경우_빈_문자열을_반환한다() {
+        // given
+        given(odsaySubwayClient.searchStation(anyString()))
+                .willReturn(new SubwayStations(List.of(SubwayStation.of("456", "오이도", 4))));
+        given(odsaySubwayClient.fetchStationInfo("456"))
+                .willReturn(new NearSubwayStations(SubwayStation.of("455", "정왕", 4), null));
 
         // when
         NearSubwayStationsResponse response = subwayService.findNearSubwayStations("오이도", 4);
@@ -54,8 +71,7 @@ class SubwayServiceTest extends BaseRestClientTest {
         // then
         assertAll(
                 () -> assertThat(response.prevStationName()).isEqualTo("정왕"),
-                () -> assertThat(response.nextStationName()).isEqualTo(""),
-                () -> mockServer.verify()
+                () -> assertThat(response.nextStationName()).isEqualTo("")
         );
     }
 }

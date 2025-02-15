@@ -1,8 +1,10 @@
 package com.easyride.subway.domain;
 
 import java.util.Arrays;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+@Getter
 @RequiredArgsConstructor
 public enum StationLine {
 

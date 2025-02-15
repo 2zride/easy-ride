@@ -77,7 +77,7 @@ public record DataSeoulRealTimeTrainPositionResponse(
             return Arrays.stream(values())
                     .filter(mapper -> mapper.value.equals(value))
                     .findAny()
-                    .orElseThrow(() -> new EasyRideException(SubwayErrorCode.DATA_SEOUL_INVALID_UP_DOWN_LINE))
+                    .orElseThrow(() -> new EasyRideException(SubwayErrorCode.INVALID_UP_DOWN_LINE))
                     .upDownLine;
         }
     }

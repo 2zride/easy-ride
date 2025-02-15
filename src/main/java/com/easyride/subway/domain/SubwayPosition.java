@@ -1,7 +1,9 @@
 package com.easyride.subway.domain;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+@Getter
 @RequiredArgsConstructor
 public class SubwayPosition {
 
@@ -9,4 +11,23 @@ public class SubwayPosition {
     private final UpDownLine upDownLine;
     private final SubwayStation nowStation;
     private final SubwayStation endStation;
+
+    public boolean isSameDirection(UpDownLine direction) {
+        return this.upDownLine == direction;
+    }
+
+    public boolean isBeforeEndStation(UpDownLine direction, SubwayStation targetStation) {
+        if (direction == UpDownLine.UP) {
+            return Integer.parseInt(targetStation.getId()) >= Integer.parseInt(endStation.getId());
+        }
+        return Integer.parseInt(targetStation.getId()) <= Integer.parseInt(endStation.getId());
+    }
+
+    public int distanceFrom(SubwayStation targetStation) {
+        return Math.abs(Integer.parseInt(targetStation.getId()) - Integer.parseInt(nowStation.getId()));
+    }
+
+    public StationLine fetchStationLine() {
+        return this.nowStation.getLine();
+    }
 }

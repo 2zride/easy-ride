@@ -33,9 +33,9 @@ public class DataSeoulSubwayClient {
                 .toUriString();
     }
 
-    public List<SubwayPosition> fetchRealTimeTrainPosition(String subwayName) {
+    public List<SubwayPosition> fetchRealTimeSubwayPositions(String stationLineName) {
         DataSeoulRealTimeTrainPositionResponse response = restClient.get()
-                .uri(makeRealTimeTrainPositionUri(subwayName))
+                .uri(makeRealTimeTrainPositionUri(stationLineName))
                 .exchange((req, res) -> responseConverter.convert(res));
         return response.toSubwayPositions();
     }
