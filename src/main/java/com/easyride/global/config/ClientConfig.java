@@ -14,7 +14,7 @@ public class ClientConfig {
     private static final Duration DEFAULT_READ_TIMEOUT = Duration.ofSeconds(30);
 
     @Bean
-    public RestClient.Builder odsayRestClientBuilder() {
+    public RestClient.Builder restClientBuilder() {
         return RestClient.builder()
                 .requestFactory(requestFactory());
     }
