@@ -38,11 +38,11 @@ public class DataSeoulResponseConverter {
         }
         String responseBody = new String(response.getBody().readAllBytes());
         DataSeoulErrorResponse errorResponse = extractErrorResponse(responseBody);
-        if (isError(errorResponse)) { // TODO 로깅
-            throw new EasyRideException(SubwayErrorCode.DATA_SEOUL_API_ERROR);
-        }
         if (isEmptyResult(errorResponse)) {
             throw new EasyRideException(SubwayErrorCode.NO_SUBWAY_IN_OPERATION);
+        }
+        if (isError(errorResponse)) { // TODO 로깅
+            throw new EasyRideException(SubwayErrorCode.DATA_SEOUL_API_ERROR);
         }
         return OBJECT_MAPPER.readValue(responseBody, DataSeoulRealTimeSubwayPositionResponse.class);
     }

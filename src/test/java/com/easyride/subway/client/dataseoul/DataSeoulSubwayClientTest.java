@@ -1,9 +1,11 @@
 package com.easyride.subway.client.dataseoul;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.easyride.global.config.BaseRestClientTest;
+import com.easyride.global.exception.EasyRideException;
 import com.easyride.subway.domain.SubwayPosition;
 import com.easyride.subway.helper.DataSeoulUriGenerator;
 import java.io.IOException;
@@ -46,6 +48,38 @@ class DataSeoulSubwayClientTest extends BaseRestClientTest {
                 () -> assertThat(subwayPositions)
                         .map(SubwayPosition::getSubwayNumber)
                         .containsExactly("2390", "2413", "2373", "2344", "2389"),
+                () -> mockServer.verify()
+        );
+    }
+
+    @Test
+    void 지하철역_호선_이름으로_실시간_지하철_위치정보조회에_실패하면_예외를_반환한다() throws IOException {
+        // given
+        String requestUri = uriGenerator.makeRealTimeTrainPositionUri("2호선");
+        String responseBody = readResourceFile("dataseoul/error/error300.json");
+        configure200MockServer(requestUri, responseBody);
+
+        // when & then
+        assertAll(
+                () -> assertThatThrownBy(() -> subwayClient.fetchRealTimeSubwayPositions("2호선"))
+                        .isInstanceOf(EasyRideException.class)
+                        .hasMessage("서울시 공공데이터 API 호출 과정에서 예외가 발생했습니다."),
+                () -> mockServer.verify()
+        );
+    }
+
+    @Test
+    void 지하철역_호선_이름으로_실시간_지하철_위치정보조회시_빈결과라면_예외를_반환한다() throws IOException {
+        // given
+        String requestUri = uriGenerator.makeRealTimeTrainPositionUri("2호선");
+        String responseBody = readResourceFile("dataseoul/success/info200.json");
+        configure200MockServer(requestUri, responseBody);
+
+        // when & then
+        assertAll(
+                () -> assertThatThrownBy(() -> subwayClient.fetchRealTimeSubwayPositions("2호선"))
+                        .isInstanceOf(EasyRideException.class)
+                        .hasMessage("해당 호선에서 현재 운행 중인 지하철이 없습니다."),
                 () -> mockServer.verify()
         );
     }
