@@ -1,5 +1,10 @@
 package com.easyride.subway.client.dataseoul;
 
+import static com.easyride.subway.fixture.SubwayFixture.POSITION_2344;
+import static com.easyride.subway.fixture.SubwayFixture.POSITION_2373;
+import static com.easyride.subway.fixture.SubwayFixture.POSITION_2389;
+import static com.easyride.subway.fixture.SubwayFixture.POSITION_2390;
+import static com.easyride.subway.fixture.SubwayFixture.POSITION_2413;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -46,8 +51,7 @@ class DataSeoulSubwayClientTest extends BaseRestClientTest {
         // then
         assertAll(
                 () -> assertThat(subwayPositions)
-                        .map(SubwayPosition::getSubwayNumber)
-                        .containsExactly("2390", "2413", "2373", "2344", "2389"),
+                        .containsExactly(POSITION_2390, POSITION_2413, POSITION_2373, POSITION_2344, POSITION_2389),
                 () -> mockServer.verify()
         );
     }

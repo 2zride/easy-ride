@@ -1,10 +1,12 @@
 package com.easyride.subway.domain;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
+@EqualsAndHashCode(of = {"subwayNumber", "upDownLine", "nowStation", "endStation"})
 public class SubwayPosition {
 
     private final String subwayNumber;

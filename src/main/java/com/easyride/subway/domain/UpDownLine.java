@@ -12,6 +12,14 @@ public enum UpDownLine {
     public static UpDownLine decideUpDownLine(SubwayStation startStation, SubwayStation endStation) {
         int start = Integer.parseInt(startStation.getId());
         int end = Integer.parseInt(endStation.getId());
+        if (startStation.getLine() == StationLine.SEOUL_METRO_2) {
+            if (end - start > 0) {
+                return UP;
+            }
+            if (end - start < 0) {
+                return DOWN;
+            }
+        }
         if (end - start > 0) {
             return DOWN;
         }
