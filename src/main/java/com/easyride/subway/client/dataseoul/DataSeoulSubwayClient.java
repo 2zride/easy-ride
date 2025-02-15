@@ -1,6 +1,6 @@
 package com.easyride.subway.client.dataseoul;
 
-import com.easyride.subway.client.dto.DataSeoulRealTimeTrainPositionResponse;
+import com.easyride.subway.client.dto.DataSeoulRealTimeSubwayPositionResponse;
 import com.easyride.subway.domain.SubwayPosition;
 import java.util.List;
 import java.util.Map;
@@ -13,7 +13,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 @Component
 public class DataSeoulSubwayClient {
 
-    private static final String PATH_OF_REAL_TIME_TRAIN_POSITION = "/realtimePosition/{startIndex}/{endIndex}/{subwayName}";
+    private static final String PATH_OF_REAL_TIME_SUBWAY_POSITION = "/realtimePosition/{startIndex}/{endIndex}/{subwayName}";
+    private static final int DEFAULT_START_INDEX_OF_REAL_TIME_SUBWAY_POSITION = 0;
+    private static final int DEFAULT_END_INDEX_OF_REAL_TIME_SUBWAY_POSITION = 100;
 
     private final RestClient restClient;
     private final DataSeoulResponseConverter responseConverter;
@@ -34,18 +36,18 @@ public class DataSeoulSubwayClient {
     }
 
     public List<SubwayPosition> fetchRealTimeSubwayPositions(String stationLineName) {
-        DataSeoulRealTimeTrainPositionResponse response = restClient.get()
-                .uri(makeRealTimeTrainPositionUri(stationLineName))
+        DataSeoulRealTimeSubwayPositionResponse response = restClient.get()
+                .uri(makeRealTimeSubwayPositionUri(stationLineName))
                 .exchange((req, res) -> responseConverter.convert(res));
         return response.toSubwayPositions();
     }
 
-    private String makeRealTimeTrainPositionUri(String subwayName) {
-        return UriComponentsBuilder.fromUriString(PATH_OF_REAL_TIME_TRAIN_POSITION)
+    private String makeRealTimeSubwayPositionUri(String stationLineName) {
+        return UriComponentsBuilder.fromUriString(PATH_OF_REAL_TIME_SUBWAY_POSITION)
                 .uriVariables(Map.of(
-                        "startIndex", 0, // TODO change
-                        "endIndex", 60, // TODO change
-                        "subwayName", subwayName
+                        "startIndex", DEFAULT_START_INDEX_OF_REAL_TIME_SUBWAY_POSITION,
+                        "endIndex", DEFAULT_END_INDEX_OF_REAL_TIME_SUBWAY_POSITION,
+                        "subwayName", stationLineName
                 ))
                 .build(false)
                 .toUriString();

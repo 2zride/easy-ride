@@ -1,4 +1,4 @@
-package com.easyride.subway.client;
+package com.easyride.subway.client.sk;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -6,8 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.easyride.global.config.BaseRestClientTest;
 import com.easyride.global.exception.EasyRideException;
-import com.easyride.subway.client.sk.SkProperty;
-import com.easyride.subway.client.sk.SkSubwayClient;
 import com.easyride.subway.domain.StationLine;
 import com.easyride.subway.domain.SubwayCarCongestion;
 import com.easyride.subway.domain.SubwayCongestion;

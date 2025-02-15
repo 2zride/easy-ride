@@ -2,7 +2,7 @@ package com.easyride.subway.client.dataseoul;
 
 import com.easyride.global.exception.EasyRideException;
 import com.easyride.subway.client.dto.DataSeoulErrorResponse;
-import com.easyride.subway.client.dto.DataSeoulRealTimeTrainPositionResponse;
+import com.easyride.subway.client.dto.DataSeoulRealTimeSubwayPositionResponse;
 import com.easyride.subway.exception.SubwayErrorCode;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -32,7 +32,7 @@ public class DataSeoulResponseConverter {
         return INSTANCE;
     }
 
-    public DataSeoulRealTimeTrainPositionResponse convert(ConvertibleClientHttpResponse response) throws IOException {
+    public DataSeoulRealTimeSubwayPositionResponse convert(ConvertibleClientHttpResponse response) throws IOException {
         if (response.getStatusCode().isError()) {
             throw new EasyRideException(SubwayErrorCode.DATA_SEOUL_API_ERROR);
         }
@@ -44,7 +44,7 @@ public class DataSeoulResponseConverter {
         if (isEmptyResult(errorResponse)) {
             throw new EasyRideException(SubwayErrorCode.NO_SUBWAY_IN_OPERATION);
         }
-        return OBJECT_MAPPER.readValue(responseBody, DataSeoulRealTimeTrainPositionResponse.class);
+        return OBJECT_MAPPER.readValue(responseBody, DataSeoulRealTimeSubwayPositionResponse.class);
     }
 
     private DataSeoulErrorResponse extractErrorResponse(String responseBody) throws IOException {

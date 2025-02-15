@@ -12,14 +12,14 @@ import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 
-public record DataSeoulRealTimeTrainPositionResponse(
+public record DataSeoulRealTimeSubwayPositionResponse(
         DataSeoulErrorResponse errorMessage,
         List<RealTimePosition> realtimePositionList
 ) {
 
     public List<SubwayPosition> toSubwayPositions() {
         return realtimePositionList.stream()
-                .map(position -> new SubwayPosition(position.trainNumber,
+                .map(position -> new SubwayPosition(position.subwayNumber,
                         UpDownLineMapper.asUpDownLine(position.upDownLine),
                         toSubwayStation(position.stationId, position.stationName),
                         toSubwayStation(position.endStationId, position.endStationName)))
@@ -55,7 +55,7 @@ public record DataSeoulRealTimeTrainPositionResponse(
             String upDownLine, // 0 상행/내선 1 하행/외선
 
             @JsonAlias("trainNo")
-            String trainNumber,
+            String subwayNumber,
 
             @JsonAlias("recptnDt")
             @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
