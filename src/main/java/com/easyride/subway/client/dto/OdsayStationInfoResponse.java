@@ -17,17 +17,19 @@ public class OdsayStationInfoResponse extends OdsayResponse {
     public NearSubwayStations toNearSubwayStations() {
         List<StationDetail> prev = result.prevObj().station;
         List<StationDetail> next = result.nextObj().station;
-        SubwayStation prevStation = toSubwayStation(prev);
-        SubwayStation nextStation = toSubwayStation(next);
-        return new NearSubwayStations(prevStation, nextStation);
+        NearSubwayStations nearSubwayStations = new NearSubwayStations();
+        nearSubwayStations.addStations(toSubwayStations(prev));
+        nearSubwayStations.addStations(toSubwayStations(next));
+        return nearSubwayStations;
     }
 
-    private SubwayStation toSubwayStation(List<StationDetail> stationDetail) {
-        if (stationDetail == null) {
-            return null;
+    private List<SubwayStation> toSubwayStations(List<StationDetail> stationDetails) {
+        if (stationDetails == null) {
+            return List.of();
         }
-        StationDetail station = stationDetail.get(0);
-        return new SubwayStation(station.stationId, station.stationName, station.type);
+        return stationDetails.stream()
+                .map(detail -> SubwayStation.of(detail.stationId, detail.stationName, detail.type))
+                .toList();
     }
 
     private record SuccessDetail(

@@ -1,14 +1,15 @@
 package com.easyride.subway.service.dto;
 
 import com.easyride.subway.domain.NearSubwayStations;
+import java.util.List;
 
-public record NearSubwayStationsResponse(String prevStationName,
-                                         String nextStationName) {
+public record NearSubwayStationsResponse(
+        List<SubwayStationDetail> stations
+) {
 
-    private static final String EMPTY = "";
-
-    public NearSubwayStationsResponse(NearSubwayStations stations) {
-        this(stations.getPrevStation() != null ? stations.getPrevStation().getName() : EMPTY,
-                stations.getNextStation() != null ? stations.getNextStation().getName() : EMPTY);
+    public NearSubwayStationsResponse(NearSubwayStations nearStations) {
+        this(nearStations.getStations().stream()
+                .map(SubwayStationDetail::new)
+                .toList());
     }
 }

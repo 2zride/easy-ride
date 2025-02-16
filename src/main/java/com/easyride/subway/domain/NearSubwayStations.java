@@ -1,15 +1,18 @@
 package com.easyride.subway.domain;
 
-import jakarta.annotation.Nullable;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-@Getter
-@RequiredArgsConstructor
 public class NearSubwayStations {
 
-    @Nullable
-    private final SubwayStation prevStation;
-    @Nullable
-    private final SubwayStation nextStation;
+    private final List<SubwayStation> stations = new ArrayList<>();
+
+    public void addStations(List<SubwayStation> stations) {
+        this.stations.addAll(stations);
+    }
+
+    public List<SubwayStation> getStations() {
+        return Collections.unmodifiableList(stations);
+    }
 }

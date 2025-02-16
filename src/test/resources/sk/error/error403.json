@@ -1,0 +1,8 @@
+{
+  "error": {
+    "id": "403",
+    "category": "gw",
+    "code": "INVALID_API_KEY",
+    "message": "Forbidden"
+  }
+}
