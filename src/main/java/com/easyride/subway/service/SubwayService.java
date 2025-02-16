@@ -1,19 +1,16 @@
 package com.easyride.subway.service;
 
-import com.easyride.subway.client.dataseoul.DataSeoulStationLineName;
 import com.easyride.subway.client.dataseoul.DataSeoulSubwayClient;
 import com.easyride.subway.client.odsay.OdsaySubwayClient;
 import com.easyride.subway.client.sk.SkSubwayClient;
 import com.easyride.subway.domain.NearSubwayStations;
+import com.easyride.subway.domain.Subway;
 import com.easyride.subway.domain.SubwayCongestion;
-import com.easyride.subway.domain.SubwayPosition;
 import com.easyride.subway.domain.SubwayStation;
 import com.easyride.subway.domain.SubwayStations;
-import com.easyride.subway.domain.UpDownLine;
+import com.easyride.subway.domain.Subways;
 import com.easyride.subway.service.dto.NearSubwayStationsResponse;
 import com.easyride.subway.service.dto.SubwayCarCongestionsResponse;
-import java.util.Comparator;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -27,25 +24,15 @@ public class SubwayService {
 
     public NearSubwayStationsResponse findNearSubwayStations(String stationName, int stationLine) {
         SubwayStations searchStations = odsaySubwayClient.searchStation(stationName);
-        String searchStationId = searchStations.fetchStationIdByStationLine(stationLine);
-        NearSubwayStations nearStations = odsaySubwayClient.fetchStationInfo(searchStationId);
+        SubwayStation searchStation = searchStations.findStationByStationLine(stationLine);
+        NearSubwayStations nearStations = odsaySubwayClient.fetchStationInfo(searchStation.getId());
         return new NearSubwayStationsResponse(nearStations);
     }
 
-    public SubwayCarCongestionsResponse findSubwayCongestion(SubwayStation station, SubwayStation nextStation) {
-        String stationLineName = DataSeoulStationLineName.asStationLineName(station.getLine());
-        List<SubwayPosition> subwayPositions = dataSeoulSubwayClient.fetchRealTimeSubwayPositions(stationLineName);
-
-        UpDownLine direction = UpDownLine.decideUpDownLine(station, nextStation);
-        SubwayPosition position = subwayPositions.stream()
-                .filter(subwayPosition -> subwayPosition.isSameDirection(direction))
-                .filter(subwayPosition -> subwayPosition.isBeforeEndStation(direction, station))
-                .min(Comparator.comparingInt(subwayPosition -> subwayPosition.distanceFrom(station)))
-                .orElseThrow();// todo
-
-        SubwayCongestion subwayCongestion = skSubwayClient.fetchRealTimeCongestion(
-                position.fetchStationLine().getNumber(), position.getSubwayNumber());
-
-        return new SubwayCarCongestionsResponse(station, nextStation, subwayCongestion);
+    public SubwayCarCongestionsResponse findSubwayCongestion(SubwayStation targetStation, SubwayStation nextStation) {
+        Subways subways = dataSeoulSubwayClient.fetchRealTimeSubwayPositions(targetStation.getLine());
+        Subway subway = subways.findApproachingSubway(targetStation, nextStation);
+        SubwayCongestion subwayCongestion = skSubwayClient.fetchCongestion(subway);
+        return new SubwayCarCongestionsResponse(targetStation, nextStation, subwayCongestion);
     }
 }

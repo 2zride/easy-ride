@@ -17,7 +17,7 @@ public class OdsaySearchStationResponse extends OdsayResponse {
     public SubwayStations toSubwayStations() {
         List<StationDetail> stationDetails = result.station();
         List<SubwayStation> subwayStations = stationDetails.stream()
-                .map(station -> SubwayStation.of(station.stationId, station.stationName, station.type))
+                .map(detail -> SubwayStation.of(detail.stationId, detail.stationName, detail.type))
                 .toList();
         return new SubwayStations(subwayStations);
     }

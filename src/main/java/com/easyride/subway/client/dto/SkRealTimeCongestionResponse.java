@@ -1,5 +1,6 @@
 package com.easyride.subway.client.dto;
 
+import com.easyride.subway.domain.Subway;
 import com.easyride.subway.domain.SubwayCongestion;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import java.util.Arrays;
@@ -17,21 +18,19 @@ public record SkRealTimeCongestionResponse(
         return !success;
     }
 
-    public SubwayCongestion toSubwayCongestion() {
-        String[] rawCarCongestions = data.congestionResult.congestionCar.split("\\|");
-        List<Integer> carCongestions = Arrays.stream(rawCarCongestions)
+    public SubwayCongestion toSubwayCongestion(Subway subway) {
+        int subwayCongestion = Integer.parseInt(data.congestionResult.congestionTrain);
+        List<Integer> carCongestions = Arrays.stream(data.congestionResult.congestionCar.split("\\|"))
                 .map(Integer::parseInt)
                 .toList();
-        return SubwayCongestion.of(
-                Integer.parseInt(data.subwayLine),
-                data.trainY,
-                Integer.parseInt(data.congestionResult.congestionTrain),
-                carCongestions);
+        return SubwayCongestion.of(subway, subwayCongestion, carCongestions);
     }
 
     private record DataDetail(
-            String subwayLine,
-            String trainY,
+            @JsonAlias("subwayLine")
+            String stationLine,
+            @JsonAlias("trainY")
+            String subwayId,
             CongestionDetail congestionResult
     ) {
     }
@@ -39,7 +38,7 @@ public record SkRealTimeCongestionResponse(
     private record CongestionDetail(
             String congestionTrain,
             String congestionCar,
-            Integer congestionType
+            Integer congestionType // TODO 로깅 필수
     ) {
     }
 }

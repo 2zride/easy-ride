@@ -1,6 +1,7 @@
 package com.easyride.subway.client.sk;
 
 import com.easyride.subway.client.dto.SkRealTimeCongestionResponse;
+import com.easyride.subway.domain.Subway;
 import com.easyride.subway.domain.SubwayCongestion;
 import java.util.Map;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -25,18 +26,18 @@ public class SkSubwayClient {
         this.responseConverter = SkResponseConverter.getInstance();
     }
 
-    public SubwayCongestion fetchRealTimeCongestion(int subwayLine, String trainY) {
+    public SubwayCongestion fetchCongestion(Subway subway) {
         SkRealTimeCongestionResponse response = restClient.get()
-                .uri(makeRealTimeCongestionUri(subwayLine, trainY))
+                .uri(makeRealTimeCongestionUri(subway.stationLine().getNumber(), subway.getId()))
                 .exchange((req, res) -> responseConverter.convert(res));
-        return response.toSubwayCongestion();
+        return response.toSubwayCongestion(subway);
     }
 
-    private String makeRealTimeCongestionUri(int subwayLine, String trainY) {
+    private String makeRealTimeCongestionUri(int subwayLine, String subwayId) {
         return UriComponentsBuilder.fromUriString(PATH_OF_REAL_TIME_CONGESTION)
                 .uriVariables(Map.of(
                         "subwayLine", subwayLine,
-                        "trainY", trainY))
+                        "trainY", subwayId))
                 .build(false)
                 .toUriString();
     }

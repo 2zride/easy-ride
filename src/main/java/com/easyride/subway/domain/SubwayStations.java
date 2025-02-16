@@ -9,18 +9,21 @@ public class SubwayStations {
     private final List<SubwayStation> stations;
 
     public SubwayStations(List<SubwayStation> stations) {
-        if (stations.isEmpty()) {
-            throw new EasyRideException(SubwayErrorCode.INVALID_STATION);
-        }
+        validate(stations);
         this.stations = stations;
     }
 
-    public String fetchStationIdByStationLine(int stationLineNumber) {
+    private void validate(List<SubwayStation> stations) {
+        if (stations.isEmpty()) {
+            throw new EasyRideException(SubwayErrorCode.INVALID_STATION);
+        }
+    }
+
+    public SubwayStation findStationByStationLine(int stationLineNumber) {
         StationLine stationLine = StationLine.asStationLine(stationLineNumber);
         return stations.stream()
-                .filter(station -> station.getLine().equals(stationLine))
-                .findFirst()
-                .orElseThrow(() -> new EasyRideException(SubwayErrorCode.INVALID_STATION))
-                .getId();
+                .filter(station -> station.hasLine(stationLine))
+                .findAny()
+                .orElseThrow(() -> new EasyRideException(SubwayErrorCode.INVALID_STATION));
     }
 }

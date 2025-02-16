@@ -11,10 +11,10 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.easyride.global.config.BaseRestClientTest;
 import com.easyride.global.exception.EasyRideException;
-import com.easyride.subway.domain.SubwayPosition;
+import com.easyride.subway.domain.StationLine;
+import com.easyride.subway.domain.Subways;
 import com.easyride.subway.helper.DataSeoulUriGenerator;
 import java.io.IOException;
-import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,11 +46,11 @@ class DataSeoulSubwayClientTest extends BaseRestClientTest {
         configure200MockServer(requestUri, responseBody);
 
         // when
-        List<SubwayPosition> subwayPositions = subwayClient.fetchRealTimeSubwayPositions("2호선");
+        Subways subways = subwayClient.fetchRealTimeSubwayPositions(StationLine.SEOUL_METRO_2);
 
         // then
         assertAll(
-                () -> assertThat(subwayPositions)
+                () -> assertThat(subways.getSubways())
                         .containsExactly(POSITION_2390, POSITION_2413, POSITION_2373, POSITION_2344, POSITION_2389),
                 () -> mockServer.verify()
         );
@@ -65,7 +65,7 @@ class DataSeoulSubwayClientTest extends BaseRestClientTest {
 
         // when & then
         assertAll(
-                () -> assertThatThrownBy(() -> subwayClient.fetchRealTimeSubwayPositions("2호선"))
+                () -> assertThatThrownBy(() -> subwayClient.fetchRealTimeSubwayPositions(StationLine.SEOUL_METRO_2))
                         .isInstanceOf(EasyRideException.class)
                         .hasMessage("서울시 공공데이터 API 호출 과정에서 예외가 발생했습니다."),
                 () -> mockServer.verify()
@@ -81,7 +81,7 @@ class DataSeoulSubwayClientTest extends BaseRestClientTest {
 
         // when & then
         assertAll(
-                () -> assertThatThrownBy(() -> subwayClient.fetchRealTimeSubwayPositions("2호선"))
+                () -> assertThatThrownBy(() -> subwayClient.fetchRealTimeSubwayPositions(StationLine.SEOUL_METRO_2))
                         .isInstanceOf(EasyRideException.class)
                         .hasMessage("해당 호선에서 현재 운행 중인 지하철이 없습니다."),
                 () -> mockServer.verify()

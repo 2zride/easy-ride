@@ -7,6 +7,7 @@ import static com.easyride.subway.fixture.SubwayFixture.POSITION_2390;
 import static com.easyride.subway.fixture.SubwayFixture.POSITION_2413;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 
@@ -14,9 +15,12 @@ import com.easyride.subway.client.dataseoul.DataSeoulSubwayClient;
 import com.easyride.subway.client.odsay.OdsaySubwayClient;
 import com.easyride.subway.client.sk.SkSubwayClient;
 import com.easyride.subway.domain.NearSubwayStations;
+import com.easyride.subway.domain.StationLine;
+import com.easyride.subway.domain.Subway;
 import com.easyride.subway.domain.SubwayCongestion;
 import com.easyride.subway.domain.SubwayStation;
 import com.easyride.subway.domain.SubwayStations;
+import com.easyride.subway.domain.Subways;
 import com.easyride.subway.service.dto.NearSubwayStationsResponse;
 import com.easyride.subway.service.dto.SubwayCarCongestionDetail;
 import com.easyride.subway.service.dto.SubwayCarCongestionsResponse;
@@ -51,60 +55,66 @@ class SubwayServiceTest { // TODO ServiceTest 생성
         given(odsaySubwayClient.searchStation("봉천"))
                 .willReturn(new SubwayStations(List.of(SubwayStation.of("229", "봉천", 2))));
 
+        NearSubwayStations nearSubwayStations = new NearSubwayStations();
+        nearSubwayStations.addStations(List.of(SubwayStation.of("228", "서울대입구", 2)));
+        nearSubwayStations.addStations(List.of(SubwayStation.of("230", "신림", 2)));
         given(odsaySubwayClient.fetchStationInfo("229"))
-                .willReturn(new NearSubwayStations(
-                        SubwayStation.of("228", "서울대입구", 2),
-                        SubwayStation.of("230", "신림", 2)));
+                .willReturn(nearSubwayStations);
 
         // when
         NearSubwayStationsResponse response = subwayService.findNearSubwayStations("봉천", 2);
 
         // then
         assertAll(
-                () -> assertThat(response.prevStationName()).isEqualTo("서울대입구"),
-                () -> assertThat(response.nextStationName()).isEqualTo("신림")
+                () -> assertThat(response.stations()).hasSize(2),
+                () -> assertThat(response.stations().get(0).name()).isEqualTo("서울대입구"),
+                () -> assertThat(response.stations().get(1).name()).isEqualTo("신림")
         );
     }
 
     @Test
-    void 호선과_이름을_기반으로_양옆의_지하철역을_조회할_때_종점일_경우_빈_문자열을_반환한다() {
+    void 호선과_이름을_기반으로_양옆의_지하철역을_조회할_때_종점일_경우() {
         // given
         given(odsaySubwayClient.searchStation(anyString()))
                 .willReturn(new SubwayStations(List.of(SubwayStation.of("456", "오이도", 4))));
 
+        NearSubwayStations nearSubwayStations = new NearSubwayStations();
+        nearSubwayStations.addStations(List.of(SubwayStation.of("455", "정왕", 4)));
         given(odsaySubwayClient.fetchStationInfo("456"))
-                .willReturn(new NearSubwayStations(SubwayStation.of("455", "정왕", 4), null));
+                .willReturn(nearSubwayStations);
 
         // when
         NearSubwayStationsResponse response = subwayService.findNearSubwayStations("오이도", 4);
 
         // then
         assertAll(
-                () -> assertThat(response.prevStationName()).isEqualTo("정왕"),
-                () -> assertThat(response.nextStationName()).isEqualTo("")
+                () -> assertThat(response.stations()).hasSize(1),
+                () -> assertThat(response.stations().get(0).name()).isEqualTo("정왕")
         );
     }
 
     @Test
     void 현재_지하철역과_다음_지하철역으로_지하철_칸별_혼잡도를_조회한다() {
         // given
-        given(dataSeoulSubwayClient.fetchRealTimeSubwayPositions("2호선"))
-                .willReturn(List.of(POSITION_2390, POSITION_2413, POSITION_2373, POSITION_2344, POSITION_2389));
+        given(dataSeoulSubwayClient.fetchRealTimeSubwayPositions(StationLine.SEOUL_METRO_2))
+                .willReturn(new Subways(
+                        List.of(POSITION_2390, POSITION_2413, POSITION_2373, POSITION_2344, POSITION_2389)));
 
+        Subway subway = new Subway("2390", null, null, null); // 잠실나루
         List<Integer> carCongestions = List.of(46, 38, 46, 31, 67, 68, 66, 78, 69, 63);
-        given(skSubwayClient.fetchRealTimeCongestion(2, "2390")) // 잠실나루
-                .willReturn(SubwayCongestion.of(2, "2390", 57, carCongestions));
+        given(skSubwayClient.fetchCongestion(any(Subway.class)))
+                .willReturn(SubwayCongestion.of(subway, 57, carCongestions));
 
         // when
         SubwayCarCongestionsResponse response = subwayService.findSubwayCongestion(
                 SubwayStation.of("229", "봉천", 2),
-                SubwayStation.of("230", "신림", 2)); // 봉천 -> 신림 (DOWN)
+                SubwayStation.of("230", "신림", 2));
 
         // then
         assertAll(
-                () -> assertThat(response.station().stationLine()).isEqualTo(2),
-                () -> assertThat(response.station().stationName()).isEqualTo("봉천"),
-                () -> assertThat(response.station().nextStationName()).isEqualTo("신림"),
+                () -> assertThat(response.station().line().getNumber()).isEqualTo(2),
+                () -> assertThat(response.station().name()).isEqualTo("봉천"),
+                () -> assertThat(response.nextStation().name()).isEqualTo("신림"),
                 () -> assertThat(response.carCongestions())
                         .map(SubwayCarCongestionDetail::carCongestion)
                         .hasSameElementsAs(carCongestions)

@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum DataSeoulStationLineName {
+public enum DataSeoulStationLineMapper {
 
     SEOUL_METRO_1(StationLine.SEOUL_METRO_1, "1호선"),
     SEOUL_METRO_2(StationLine.SEOUL_METRO_2, "2호선"),
@@ -27,7 +27,7 @@ public enum DataSeoulStationLineName {
 
     public static String asStationLineName(StationLine stationLine) {
         return Arrays.stream(values())
-                .filter(value -> value.stationLine == stationLine)
+                .filter(value -> value.stationLine.isSame(stationLine))
                 .findAny()
                 .orElseThrow(() -> new EasyRideException(SubwayErrorCode.DATA_SEOUL_INVALID_STATION_LINE_NAME))
                 .stationLineName;

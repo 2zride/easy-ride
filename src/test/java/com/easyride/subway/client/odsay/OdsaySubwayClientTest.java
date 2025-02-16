@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import com.easyride.global.config.BaseRestClientTest;
 import com.easyride.global.exception.EasyRideException;
 import com.easyride.subway.domain.NearSubwayStations;
-import com.easyride.subway.domain.SubwayStation;
 import com.easyride.subway.domain.SubwayStations;
 import com.easyride.subway.helper.OdsayUriGenerator;
 import java.io.IOException;
@@ -47,8 +46,8 @@ class OdsaySubwayClientTest extends BaseRestClientTest {
 
         // then
         assertAll(
-                () -> assertDoesNotThrow(() -> subwayStations.fetchStationIdByStationLine(4)),
-                () -> assertDoesNotThrow(() -> subwayStations.fetchStationIdByStationLine(116)),
+                () -> assertDoesNotThrow(() -> subwayStations.findStationByStationLine(4)),
+                () -> assertDoesNotThrow(() -> subwayStations.findStationByStationLine(116)),
                 () -> mockServer.verify()
         );
     }
@@ -62,13 +61,11 @@ class OdsaySubwayClientTest extends BaseRestClientTest {
 
         // when
         NearSubwayStations nearStations = subwayClient.fetchStationInfo("456");
-        SubwayStation prevStation = nearStations.getPrevStation();
-        SubwayStation nextStation = nearStations.getNextStation();
 
         // then
         assertAll(
-                () -> assertThat(prevStation).isNotNull(),
-                () -> assertThat(nextStation).isNull(),
+                () -> assertThat(nearStations.getStations()).hasSize(1),
+                () -> assertThat(nearStations.getStations().get(0).getName()).isEqualTo("정왕"),
                 () -> mockServer.verify()
         );
     }

@@ -1,9 +1,10 @@
 package com.easyride.subway.client.dto;
 
 import com.easyride.global.exception.EasyRideException;
-import com.easyride.subway.domain.SubwayPosition;
+import com.easyride.subway.domain.Subway;
+import com.easyride.subway.domain.SubwayDirection;
 import com.easyride.subway.domain.SubwayStation;
-import com.easyride.subway.domain.UpDownLine;
+import com.easyride.subway.domain.Subways;
 import com.easyride.subway.exception.SubwayErrorCode;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -17,13 +18,14 @@ public record DataSeoulRealTimeSubwayPositionResponse(
         List<RealTimePosition> realtimePositionList
 ) {
 
-    public List<SubwayPosition> toSubwayPositions() {
-        return realtimePositionList.stream()
-                .map(position -> new SubwayPosition(position.subwayNumber,
-                        UpDownLineMapper.asUpDownLine(position.upDownLine),
+    public Subways toSubways() {
+        List<Subway> subways = realtimePositionList.stream()
+                .map(position -> new Subway(position.subwayNumber,
+                        SubwayDirectionMapper.asDirection(position.direction, position.stationLineId.charAt(3)),
                         toSubwayStation(position.stationId, position.stationName),
                         toSubwayStation(position.endStationId, position.endStationName)))
                 .toList();
+        return new Subways(subways);
     }
 
     private SubwayStation toSubwayStation(String id, String name) {
@@ -37,10 +39,10 @@ public record DataSeoulRealTimeSubwayPositionResponse(
             Integer rowNumber,
 
             @JsonAlias("subwayId")
-            String stationLineId,
+            String stationLineId, // ex. 1002
 
             @JsonAlias("statnId")
-            String stationId, // ex. 1002000209
+            String stationId, // ex. 1002000209 TODO 엣지케이스 고려 (특히 2호선)
 
             @JsonAlias("statnNm")
             String stationName, // ex. 한양대
@@ -52,7 +54,7 @@ public record DataSeoulRealTimeSubwayPositionResponse(
             String endStationName,
 
             @JsonAlias("updnLine")
-            String upDownLine, // 0 상행/내선 1 하행/외선
+            String direction, // 0 상행/내선 1 하행/외선
 
             @JsonAlias("trainNo")
             String subwayNumber,
@@ -64,21 +66,36 @@ public record DataSeoulRealTimeSubwayPositionResponse(
     }
 
     @RequiredArgsConstructor
-    private enum UpDownLineMapper {
+    private enum SubwayDirectionMapper {
 
-        UP("0", UpDownLine.UP),
-        DOWN("1", UpDownLine.DOWN),
+        UP_MAPPER("0", SubwayDirection.UP),
+        DOWN_MAPPER("1", SubwayDirection.DOWN),
+        INNER_MAPPER("0", SubwayDirection.INNER),
+        OUTER_MAPPER("1", SubwayDirection.OUTER),
         ;
 
         private final String value;
-        private final UpDownLine upDownLine;
+        private final SubwayDirection direction;
 
-        private static UpDownLine asUpDownLine(String value) {
+        private static SubwayDirection asDirection(String value, char stationLine) {
+            if (stationLine == '2') {
+                return asDirectionWhenSeoulMetro2Line(value);
+            }
             return Arrays.stream(values())
                     .filter(mapper -> mapper.value.equals(value))
                     .findAny()
-                    .orElseThrow(() -> new EasyRideException(SubwayErrorCode.INVALID_UP_DOWN_LINE))
-                    .upDownLine;
+                    .orElseThrow(() -> new EasyRideException(SubwayErrorCode.INVALID_DIRECTION))
+                    .direction;
+        }
+
+        private static SubwayDirection asDirectionWhenSeoulMetro2Line(String value) {
+            if (value.equals(INNER_MAPPER.value)) {
+                return INNER_MAPPER.direction;
+            }
+            if (value.equals(OUTER_MAPPER.value)) {
+                return OUTER_MAPPER.direction;
+            }
+            throw new EasyRideException(SubwayErrorCode.INVALID_DIRECTION);
         }
     }
 }

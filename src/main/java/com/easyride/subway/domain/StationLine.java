@@ -23,6 +23,10 @@ public enum StationLine {
     private final int number;
     private final String description;
 
+    public boolean isSame(StationLine stationLine) {
+        return this == stationLine;
+    }
+
     public static StationLine asStationLine(int number) {
         return Arrays.stream(values())
                 .filter(subwayLine -> subwayLine.number == number)
