@@ -30,6 +30,10 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
+tasks.named('processResources') {
+    dependsOn(copyPrivate)
+}
+
 tasks.register('copyPrivate', Copy) {
     copy {
         from './secrets'
