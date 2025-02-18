@@ -112,7 +112,7 @@ class SubwayServiceTest { // TODO ServiceTest 생성
 
         // then
         assertAll(
-                () -> assertThat(response.station().line().getNumber()).isEqualTo(2),
+                () -> assertThat(response.station().line()).isEqualTo(2),
                 () -> assertThat(response.station().name()).isEqualTo("봉천"),
                 () -> assertThat(response.nextStation().name()).isEqualTo("신림"),
                 () -> assertThat(response.carCongestions())
