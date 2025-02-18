@@ -3,27 +3,22 @@ package com.easyride.subway.domain;
 import com.easyride.global.exception.EasyRideException;
 import com.easyride.subway.exception.SubwayErrorCode;
 import java.util.List;
+import java.util.function.Predicate;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 public class SubwayStations {
 
     private final List<SubwayStation> stations;
 
-    public SubwayStations(List<SubwayStation> stations) {
-        validate(stations);
-        this.stations = stations;
+    public boolean isEmpty() {
+        return this.stations.isEmpty();
     }
 
-    private void validate(List<SubwayStation> stations) {
-        if (stations.isEmpty()) {
-            throw new EasyRideException(SubwayErrorCode.INVALID_STATION);
-        }
-    }
-
-    public SubwayStation findStationByStationLine(int stationLineNumber) {
-        StationLine stationLine = StationLine.asStationLine(stationLineNumber);
+    public SubwayStation filter(Predicate<SubwayStation> condition, SubwayErrorCode errorCodeIfNotExist) {
         return stations.stream()
-                .filter(station -> station.hasLine(stationLine))
+                .filter(condition)
                 .findAny()
-                .orElseThrow(() -> new EasyRideException(SubwayErrorCode.INVALID_STATION));
+                .orElseThrow(() -> new EasyRideException(errorCodeIfNotExist));
     }
 }

@@ -8,7 +8,7 @@ public enum SubwayDirection {
     OUTER,
     ;
 
-    public boolean isSame(SubwayDirection direction) {
-        return this == direction;
+    public boolean isDifferent(SubwayDirection direction) {
+        return this != direction;
     }
 }

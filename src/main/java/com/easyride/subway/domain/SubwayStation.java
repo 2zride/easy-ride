@@ -19,7 +19,8 @@ public class SubwayStation {
         return new SubwayStation(id, name, line);
     }
 
-    public boolean hasLine(StationLine stationLine) {
+    public boolean hasLine(int stationLineNumber) {
+        StationLine stationLine = StationLine.asStationLine(stationLineNumber);
         return line.isSame(stationLine);
     }
 }

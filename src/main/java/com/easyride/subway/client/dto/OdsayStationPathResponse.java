@@ -3,8 +3,8 @@ package com.easyride.subway.client.dto;
 import com.easyride.global.exception.EasyRideException;
 import com.easyride.subway.domain.Subway;
 import com.easyride.subway.domain.SubwayDirection;
-import com.easyride.subway.domain.SubwayPath;
 import com.easyride.subway.domain.SubwayStation;
+import com.easyride.subway.domain.SubwayWithPath;
 import com.easyride.subway.exception.SubwayErrorCode;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import java.util.Arrays;
@@ -20,15 +20,17 @@ public class OdsayStationPathResponse extends OdsayResponse {
         this.result = result;
     }
 
-    public SubwayPath toSubwayPath(Subway subway) {
+    public SubwayDirection toSubwayDirection() {
         DriveInfoDetail driveInfo = result.driveInfoSet.driveInfo.get(0);
-        List<SubwayStation> stations = result.stationSet.stations.stream()
+        return DirectionMapper.asDirection(driveInfo.wayCode, driveInfo.stationLine);
+    }
+
+    public SubwayWithPath toSubwayPath(Subway subway) {
+        DriveInfoDetail driveInfo = result.driveInfoSet.driveInfo.get(0);
+        List<SubwayStation> path = result.stationSet.stations.stream()
                 .map(detail -> toSubwayStation(detail, Integer.parseInt(driveInfo.stationLine)))
                 .toList();
-        return new SubwayPath(
-                subway,
-                SubwayDirectionMapper.asDirection(driveInfo.wayCode, driveInfo.stationLine),
-                stations);
+        return new SubwayWithPath(subway, DirectionMapper.asDirection(driveInfo.wayCode, driveInfo.stationLine), path);
     }
 
     private SubwayStation toSubwayStation(StationPathDetail stationPathDetail, int stationLine) {
@@ -67,7 +69,7 @@ public class OdsayStationPathResponse extends OdsayResponse {
     }
 
     @RequiredArgsConstructor
-    private enum SubwayDirectionMapper {
+    private enum DirectionMapper {
 
         UP_MAPPER("1", SubwayDirection.UP),
         DOWN_MAPPER("2", SubwayDirection.DOWN),

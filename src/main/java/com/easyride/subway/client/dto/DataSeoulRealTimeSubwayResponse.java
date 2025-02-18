@@ -13,19 +13,24 @@ import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 
-public record DataSeoulRealTimeSubwayPositionResponse(
+public record DataSeoulRealTimeSubwayResponse(
         DataSeoulErrorResponse errorMessage,
         List<RealTimePosition> realtimePositionList
 ) {
 
     public Subways toSubways() {
-        List<Subway> subways = realtimePositionList.stream()
-                .map(position -> new Subway(position.subwayNumber,
-                        SubwayDirectionMapper.asDirection(position.direction, position.stationLineId.charAt(3)),
-                        toSubwayStation(position.stationId, position.stationName),
-                        toSubwayStation(position.endStationId, position.endStationName)))
-                .toList();
-        return new Subways(subways);
+        Subways subways = new Subways();
+        realtimePositionList.stream()
+                .map(this::toSubway)
+                .forEach(subways::add);
+        return subways;
+    }
+
+    private Subway toSubway(RealTimePosition position) {
+        return new Subway(position.subwayNumber,
+                SubwayDirectionMapper.asDirection(position.direction, position.stationLineId.charAt(3)),
+                toSubwayStation(position.stationId, position.stationName),
+                toSubwayStation(position.endStationId, position.endStationName));
     }
 
     private SubwayStation toSubwayStation(String id, String name) {

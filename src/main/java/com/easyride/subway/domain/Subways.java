@@ -1,15 +1,25 @@
 package com.easyride.subway.domain;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
-@RequiredArgsConstructor
 public class Subways {
 
-    private final List<Subway> subways;
+    private final List<Subway> subways = new ArrayList<>();
 
-    public List<Subway> getSubways() {
-        return Collections.unmodifiableList(subways);
+    public void add(Subway subway) {
+        this.subways.add(subway);
+    }
+
+    public void deleteIf(Predicate<Subway> condition) {
+        this.subways.removeIf(condition);
+    }
+
+    public <T> List<T> mapAll(Function<Subway, T> mapper) {
+        return this.subways.stream()
+                .map(mapper)
+                .toList();
     }
 }

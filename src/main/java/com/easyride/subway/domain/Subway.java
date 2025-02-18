@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-@EqualsAndHashCode(of = {"id", "direction", "nowStation", "endStation"}) // todo ?
+@EqualsAndHashCode(of = {"id", "direction", "nowStation", "endStation"})
 public class Subway {
 
     private final String id;
@@ -14,8 +14,8 @@ public class Subway {
     private final SubwayStation nowStation;
     private final SubwayStation endStation;
 
-    public boolean isSameDirection(SubwayDirection direction) {
-        return this.direction.isSame(direction);
+    public boolean isDifferentDirection(SubwayDirection direction) {
+        return this.direction.isDifferent(direction);
     }
 
     public StationLine stationLine() {

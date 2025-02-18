@@ -3,11 +3,6 @@ package com.easyride.subway.client.odsay;
 import com.easyride.subway.client.dto.OdsaySearchStationResponse;
 import com.easyride.subway.client.dto.OdsayStationInfoResponse;
 import com.easyride.subway.client.dto.OdsayStationPathResponse;
-import com.easyride.subway.domain.NearSubwayStations;
-import com.easyride.subway.domain.Subway;
-import com.easyride.subway.domain.SubwayPath;
-import com.easyride.subway.domain.SubwayStation;
-import com.easyride.subway.domain.SubwayStations;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
@@ -39,11 +34,10 @@ public class OdsaySubwayClient {
                 .toUriString();
     }
 
-    public SubwayStations searchStation(String stationName) {
-        OdsaySearchStationResponse response = restClient.get()
+    public OdsaySearchStationResponse searchStation(String stationName) {
+        return restClient.get()
                 .uri(makeSearchStationUri(stationName))
                 .exchange((req, res) -> responseConverter.convert(res, OdsaySearchStationResponse.class));
-        return response.toSubwayStations();
     }
 
     private String makeSearchStationUri(String stationName) {
@@ -55,11 +49,10 @@ public class OdsaySubwayClient {
                 .toUriString();
     }
 
-    public NearSubwayStations fetchStationInfo(String stationId) {
-        OdsayStationInfoResponse response = restClient.get()
+    public OdsayStationInfoResponse fetchStationInfo(String stationId) {
+        return restClient.get()
                 .uri(makeStationInfoUri(stationId))
                 .exchange((req, res) -> responseConverter.convert(res, OdsayStationInfoResponse.class));
-        return response.toNearSubwayStations();
     }
 
     private String makeStationInfoUri(String stationId) {
@@ -70,13 +63,10 @@ public class OdsaySubwayClient {
                 .toUriString();
     }
 
-    public SubwayPath fetchSubwayPath(Subway subway) {
-        SubwayStation startStation = subway.getNowStation();
-        SubwayStation endStation = subway.getEndStation();
-        OdsayStationPathResponse response = restClient.get()
-                .uri(makeSubwayPathUri(startStation.getId(), endStation.getId()))
+    public OdsayStationPathResponse fetchSubwayPath(String startStationId, String endStationId) {
+        return restClient.get()
+                .uri(makeSubwayPathUri(startStationId, endStationId))
                 .exchange((req, res) -> responseConverter.convert(res, OdsayStationPathResponse.class));
-        return response.toSubwayPath(subway);
     }
 
     private String makeSubwayPathUri(String startStationId, String endStationId) {

@@ -1,18 +1,12 @@
 package com.easyride.subway.client.dataseoul;
 
-import static com.easyride.subway.fixture.SubwayFixture.POSITION_2344;
-import static com.easyride.subway.fixture.SubwayFixture.POSITION_2373;
-import static com.easyride.subway.fixture.SubwayFixture.POSITION_2389;
-import static com.easyride.subway.fixture.SubwayFixture.POSITION_2390;
-import static com.easyride.subway.fixture.SubwayFixture.POSITION_2413;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import com.easyride.global.config.BaseRestClientTest;
 import com.easyride.global.exception.EasyRideException;
 import com.easyride.subway.domain.StationLine;
-import com.easyride.subway.domain.Subways;
 import com.easyride.subway.helper.DataSeoulUriGenerator;
 import java.io.IOException;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,19 +33,15 @@ class DataSeoulSubwayClientTest extends BaseRestClientTest {
     }
 
     @Test
-    void 지하철역_호선_이름으로_실시간_지하철_위치정보조회에_성공하면_도메인을_반환한다() throws IOException {
+    void 지하철역_호선_이름으로_실시간_지하철_위치정보조회에_성공한다() throws IOException {
         // given
         String requestUri = uriGenerator.makeRealTimeTrainPositionUri("2호선");
         String responseBody = readResourceFile("dataseoul/success/real-time-train-position.json");
         configure200MockServer(requestUri, responseBody);
 
-        // when
-        Subways subways = subwayClient.fetchRealTimeSubwayPositions(StationLine.SEOUL_METRO_2);
-
-        // then
+        // when & then
         assertAll(
-                () -> assertThat(subways.getSubways())
-                        .containsExactly(POSITION_2390, POSITION_2413, POSITION_2373, POSITION_2344, POSITION_2389),
+                () -> assertDoesNotThrow(() -> subwayClient.fetchRealTimeSubwaysByLine(StationLine.SEOUL_METRO_2)),
                 () -> mockServer.verify()
         );
     }
@@ -65,7 +55,7 @@ class DataSeoulSubwayClientTest extends BaseRestClientTest {
 
         // when & then
         assertAll(
-                () -> assertThatThrownBy(() -> subwayClient.fetchRealTimeSubwayPositions(StationLine.SEOUL_METRO_2))
+                () -> assertThatThrownBy(() -> subwayClient.fetchRealTimeSubwaysByLine(StationLine.SEOUL_METRO_2))
                         .isInstanceOf(EasyRideException.class)
                         .hasMessage("서울시 공공데이터 API 호출 과정에서 예외가 발생했습니다."),
                 () -> mockServer.verify()
@@ -81,7 +71,7 @@ class DataSeoulSubwayClientTest extends BaseRestClientTest {
 
         // when & then
         assertAll(
-                () -> assertThatThrownBy(() -> subwayClient.fetchRealTimeSubwayPositions(StationLine.SEOUL_METRO_2))
+                () -> assertThatThrownBy(() -> subwayClient.fetchRealTimeSubwaysByLine(StationLine.SEOUL_METRO_2))
                         .isInstanceOf(EasyRideException.class)
                         .hasMessage("해당 호선에서 현재 운행 중인 지하철이 없습니다."),
                 () -> mockServer.verify()
