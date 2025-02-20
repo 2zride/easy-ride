@@ -2,7 +2,6 @@ package com.easyride.subway.service;
 
 import com.easyride.subway.client.dataseoul.DataSeoulSubwayClient;
 import com.easyride.subway.client.dto.DataSeoulRealTimeSubwayResponse;
-import com.easyride.subway.client.dto.OdsaySearchStationResponse;
 import com.easyride.subway.client.dto.OdsayStationInfoResponse;
 import com.easyride.subway.client.dto.OdsayStationPathResponse;
 import com.easyride.subway.client.dto.SkRealTimeCongestionResponse;
@@ -13,7 +12,6 @@ import com.easyride.subway.domain.Subway;
 import com.easyride.subway.domain.SubwayCongestion;
 import com.easyride.subway.domain.SubwayDirection;
 import com.easyride.subway.domain.SubwayStation;
-import com.easyride.subway.domain.SubwayStations;
 import com.easyride.subway.domain.SubwayWithPath;
 import com.easyride.subway.domain.Subways;
 import lombok.RequiredArgsConstructor;
@@ -27,13 +25,8 @@ public class SubwayClientProcessor {
     private final DataSeoulSubwayClient dataSeoulSubwayClient;
     private final SkSubwayClient skSubwayClient;
 
-    public SubwayStations searchStation(String stationName) {
-        OdsaySearchStationResponse response = odsaySubwayClient.searchStation(stationName);
-        return response.toSubwayStations();
-    }
-
     public NearSubwayStations fetchNearStations(SubwayStation station) {
-        OdsayStationInfoResponse response = odsaySubwayClient.fetchStationInfo(station.getId());
+        OdsayStationInfoResponse response = odsaySubwayClient.fetchStationInfo(station.getHelperId());
         return response.toNearSubwayStations();
     }
 
@@ -48,9 +41,9 @@ public class SubwayClientProcessor {
     }
 
     public SubwayWithPath fetchSubwayPath(Subway subway) {
-        OdsayStationPathResponse response = odsaySubwayClient.fetchSubwayPath(
-                subway.getNowStation().getId(),
-                subway.getEndStation().getId());
+        OdsayStationPathResponse response = odsaySubwayClient.fetchSubwayPath( // 필요한건 오디세이 id
+                subway.getNowStation().getId(), // 서울공식 id
+                subway.getEndStation().getId()); // 서울공식 id
         return response.toSubwayPath(subway);
     }
 

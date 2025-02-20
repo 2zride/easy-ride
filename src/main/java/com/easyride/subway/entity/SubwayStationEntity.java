@@ -8,8 +8,15 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(of = "id")
 @Table(name = "subway_station")
 @Entity
@@ -29,4 +36,8 @@ public class SubwayStationEntity {
 
     @Enumerated(EnumType.STRING)
     private StationLine line;
+
+    public SubwayStationEntity(String name, String stationId, String odsayId, String code, Integer line) {
+        this(null, name, stationId, odsayId, code, StationLine.asStationLine(line));
+    }
 }

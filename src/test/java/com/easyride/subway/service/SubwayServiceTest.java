@@ -13,17 +13,20 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 
 import com.easyride.subway.domain.NearSubwayStations;
+import com.easyride.subway.domain.StationLine;
 import com.easyride.subway.domain.Subway;
 import com.easyride.subway.domain.SubwayCongestion;
 import com.easyride.subway.domain.SubwayDirection;
 import com.easyride.subway.domain.SubwayStation;
-import com.easyride.subway.domain.SubwayStations;
 import com.easyride.subway.domain.SubwayWithPath;
 import com.easyride.subway.domain.Subways;
+import com.easyride.subway.entity.SubwayStationEntity;
+import com.easyride.subway.entity.SubwayStationRepository;
 import com.easyride.subway.service.dto.NearSubwayStationsResponse;
 import com.easyride.subway.service.dto.SubwayCarCongestionDetail;
 import com.easyride.subway.service.dto.SubwayCarCongestionsResponse;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -37,16 +40,19 @@ class SubwayServiceTest {
     @Mock
     SubwayClientProcessor clientProcessor;
 
+    @Mock
+    SubwayStationRepository stationRepository;
+
     @BeforeEach
     void setUp() {
-        subwayService = new SubwayService(clientProcessor);
+        subwayService = new SubwayService(clientProcessor, stationRepository);
     }
 
     @Test
     void 호선과_이름을_기반으로_양옆의_지하철역을_조회한다() {
         // given
-        given(clientProcessor.searchStation(anyString()))
-                .willReturn(new SubwayStations(List.of(SubwayStation.of("229", "봉천", 2))));
+        given(stationRepository.findByNameAndLine(anyString(), any(StationLine.class)))
+                .willReturn(Optional.of(new SubwayStationEntity("봉천", "229", "229", "CODE", 2)));
 
         NearSubwayStations nearSubwayStations = new NearSubwayStations();
         nearSubwayStations.addStations(List.of(SubwayStation.of("228", "서울대입구", 2)));
@@ -68,8 +74,8 @@ class SubwayServiceTest {
     @Test
     void 호선과_이름을_기반으로_양옆의_지하철역을_조회할_때_종점일_경우() {
         // given
-        given(clientProcessor.searchStation(anyString()))
-                .willReturn(new SubwayStations(List.of(SubwayStation.of("456", "오이도", 4))));
+        given(stationRepository.findByNameAndLine(anyString(), any(StationLine.class)))
+                .willReturn(Optional.of(new SubwayStationEntity("오이도", "456", "456", "CODE", 4)));
 
         NearSubwayStations nearSubwayStations = new NearSubwayStations();
         nearSubwayStations.addStations(List.of(SubwayStation.of("455", "정왕", 4)));

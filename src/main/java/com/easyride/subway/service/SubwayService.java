@@ -2,12 +2,14 @@ package com.easyride.subway.service;
 
 import com.easyride.global.exception.EasyRideException;
 import com.easyride.subway.domain.NearSubwayStations;
+import com.easyride.subway.domain.StationLine;
 import com.easyride.subway.domain.Subway;
 import com.easyride.subway.domain.SubwayCongestion;
 import com.easyride.subway.domain.SubwayDirection;
 import com.easyride.subway.domain.SubwayStation;
-import com.easyride.subway.domain.SubwayStations;
 import com.easyride.subway.domain.Subways;
+import com.easyride.subway.entity.SubwayStationEntity;
+import com.easyride.subway.entity.SubwayStationRepository;
 import com.easyride.subway.exception.SubwayErrorCode;
 import com.easyride.subway.service.dto.NearSubwayStationsResponse;
 import com.easyride.subway.service.dto.SubwayCarCongestionsResponse;
@@ -20,21 +22,15 @@ import org.springframework.stereotype.Service;
 public class SubwayService {
 
     private final SubwayClientProcessor clientProcessor;
+    private final SubwayStationRepository stationRepository;
 
-    public NearSubwayStationsResponse findNearSubwayStations(String stationName, int stationLine) {
-        SubwayStations candidateStations = clientProcessor.searchStation(stationName);
-        validateIsEmpty(candidateStations);
-        SubwayStation targetStation = candidateStations.filter(
-                station -> station.hasLine(stationLine),
-                SubwayErrorCode.INVALID_STATION);
-        NearSubwayStations nearStations = clientProcessor.fetchNearStations(targetStation);
+    public NearSubwayStationsResponse findNearSubwayStations(String stationName, int stationLineNumber) {
+        StationLine stationLine = StationLine.asStationLine(stationLineNumber);
+        SubwayStationEntity stationEntity = stationRepository.findByNameAndLine(stationName, stationLine)
+                .orElseThrow(() -> new EasyRideException(SubwayErrorCode.INVALID_STATION));
+        SubwayStation station = SubwayStation.fromEntity(stationEntity);
+        NearSubwayStations nearStations = clientProcessor.fetchNearStations(station);
         return new NearSubwayStationsResponse(nearStations);
-    }
-
-    private void validateIsEmpty(SubwayStations stations) {
-        if (stations.isEmpty()) {
-            throw new EasyRideException(SubwayErrorCode.INVALID_STATION);
-        }
     }
 
     public SubwayCarCongestionsResponse findSubwayCongestion(SubwayStation targetStation, SubwayStation nextStation) {
