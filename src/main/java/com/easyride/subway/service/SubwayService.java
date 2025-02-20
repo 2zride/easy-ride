@@ -13,7 +13,9 @@ import com.easyride.subway.entity.SubwayStationRepository;
 import com.easyride.subway.exception.SubwayErrorCode;
 import com.easyride.subway.service.dto.NearSubwayStationsResponse;
 import com.easyride.subway.service.dto.SubwayCarCongestionsResponse;
+import jakarta.annotation.PostConstruct;
 import java.util.Comparator;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +25,12 @@ public class SubwayService {
 
     private final SubwayClientProcessor clientProcessor;
     private final SubwayStationRepository stationRepository;
+
+    @PostConstruct
+    public void loadOdsayStations() { // TODO 위치 고민
+        List<SubwayStationEntity> stations = stationRepository.findAll();
+        clientProcessor.addOdsayStations(stations);
+    }
 
     public NearSubwayStationsResponse findNearSubwayStations(String stationName, int stationLineNumber) {
         StationLine stationLine = StationLine.asStationLine(stationLineNumber);

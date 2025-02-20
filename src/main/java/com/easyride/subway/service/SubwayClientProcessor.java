@@ -5,6 +5,7 @@ import com.easyride.subway.client.dto.DataSeoulRealTimeSubwayResponse;
 import com.easyride.subway.client.dto.OdsayStationInfoResponse;
 import com.easyride.subway.client.dto.OdsayStationPathResponse;
 import com.easyride.subway.client.dto.SkRealTimeCongestionResponse;
+import com.easyride.subway.client.odsay.OdsayStationsManager;
 import com.easyride.subway.client.odsay.OdsaySubwayClient;
 import com.easyride.subway.client.sk.SkSubwayClient;
 import com.easyride.subway.domain.NearSubwayStations;
@@ -14,6 +15,8 @@ import com.easyride.subway.domain.SubwayDirection;
 import com.easyride.subway.domain.SubwayStation;
 import com.easyride.subway.domain.SubwayWithPath;
 import com.easyride.subway.domain.Subways;
+import com.easyride.subway.entity.SubwayStationEntity;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -21,17 +24,25 @@ import org.springframework.stereotype.Component;
 @Component
 public class SubwayClientProcessor {
 
+    // private final OdsayStationsManager odsayStationsManager;
     private final OdsaySubwayClient odsaySubwayClient;
     private final DataSeoulSubwayClient dataSeoulSubwayClient;
     private final SkSubwayClient skSubwayClient;
 
-    public NearSubwayStations fetchNearStations(SubwayStation station) {
-        OdsayStationInfoResponse response = odsaySubwayClient.fetchStationInfo(station.getHelperId());
+    public void addOdsayStations(List<SubwayStationEntity> stations) {
+        OdsayStationsManager.addStations(stations);
+    }
+
+    public NearSubwayStations fetchNearStations(SubwayStation targetStation) {
+        String odsayId = OdsayStationsManager.findOdsayIdByStation(targetStation);
+        OdsayStationInfoResponse response = odsaySubwayClient.fetchStationInfo(odsayId);
         return response.toNearSubwayStations();
     }
 
     public SubwayDirection fetchSubwayDirection(SubwayStation startStation, SubwayStation endStation) {
-        OdsayStationPathResponse response = odsaySubwayClient.fetchSubwayPath(startStation.getId(), endStation.getId());
+        String startOdsayId = OdsayStationsManager.findOdsayIdByStation(startStation);
+        String endOdsayId = OdsayStationsManager.findOdsayIdByStation(endStation);
+        OdsayStationPathResponse response = odsaySubwayClient.fetchSubwayPath(startOdsayId, endOdsayId);
         return response.toSubwayDirection();
     }
 
@@ -41,9 +52,9 @@ public class SubwayClientProcessor {
     }
 
     public SubwayWithPath fetchSubwayPath(Subway subway) {
-        OdsayStationPathResponse response = odsaySubwayClient.fetchSubwayPath( // 필요한건 오디세이 id
-                subway.getNowStation().getId(), // 서울공식 id
-                subway.getEndStation().getId()); // 서울공식 id
+        String nowOdsayId = OdsayStationsManager.findOdsayIdByStation(subway.getNowStation());
+        String endOdsayId = OdsayStationsManager.findOdsayIdByStation(subway.getEndStation());
+        OdsayStationPathResponse response = odsaySubwayClient.fetchSubwayPath(nowOdsayId, endOdsayId);
         return response.toSubwayPath(subway);
     }
 

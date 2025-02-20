@@ -1,5 +1,6 @@
 package com.easyride.subway.client.dto;
 
+import com.easyride.subway.client.odsay.OdsayStationsManager;
 import com.easyride.subway.domain.NearSubwayStations;
 import com.easyride.subway.domain.SubwayStation;
 import com.fasterxml.jackson.annotation.JsonAlias;
@@ -28,7 +29,7 @@ public class OdsayStationInfoResponse extends OdsayResponse {
             return List.of();
         }
         return stationDetails.stream()
-                .map(detail -> SubwayStation.of(detail.stationId, detail.stationName, detail.type))
+                .map(detail -> OdsayStationsManager.findStationByOdsayId(detail.odsayId))
                 .toList();
     }
 
@@ -45,7 +46,7 @@ public class OdsayStationInfoResponse extends OdsayResponse {
 
     private record StationDetail(
             @JsonAlias("stationID")
-            String stationId,
+            String odsayId,
             String stationName,
             Integer type) {
     }
