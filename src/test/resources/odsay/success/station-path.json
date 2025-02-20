@@ -1,0 +1,167 @@
+{
+  "result": {
+    "globalStartName": "신촌",
+    "globalEndName": "선릉",
+    "globalTravelTime": 43,
+    "globalDistance": 25.4,
+    "globalStationCount": 20,
+    "fare": 1600,
+    "cashFare": 1700,
+    "driveInfoSet": {
+      "driveInfo": [
+        {
+          "laneID": "2",
+          "laneName": "2호선",
+          "startName": "신촌",
+          "stationCount": 20,
+          "wayCode": 1,
+          "wayName": "외선순환"
+        }
+      ]
+    },
+    "stationSet": {
+      "stations": [
+        {
+          "startID": 240,
+          "startName": "신촌",
+          "endSID": 239,
+          "endName": "홍대입구",
+          "travelTime": 2
+        },
+        {
+          "startID": 239,
+          "startName": "홍대입구",
+          "endSID": 238,
+          "endName": "합정",
+          "travelTime": 4
+        },
+        {
+          "startID": 238,
+          "startName": "합정",
+          "endSID": 237,
+          "endName": "당산",
+          "travelTime": 8
+        },
+        {
+          "startID": 237,
+          "startName": "당산",
+          "endSID": 236,
+          "endName": "영등포구청",
+          "travelTime": 10
+        },
+        {
+          "startID": 236,
+          "startName": "영등포구청",
+          "endSID": 235,
+          "endName": "문래",
+          "travelTime": 12
+        },
+        {
+          "startID": 235,
+          "startName": "문래",
+          "endSID": 234,
+          "endName": "신도림",
+          "travelTime": 14
+        },
+        {
+          "startID": 234,
+          "startName": "신도림",
+          "endSID": 233,
+          "endName": "대림",
+          "travelTime": 17
+        },
+        {
+          "startID": 233,
+          "startName": "대림",
+          "endSID": 232,
+          "endName": "구로디지털단지",
+          "travelTime": 19
+        },
+        {
+          "startID": 232,
+          "startName": "구로디지털단지",
+          "endSID": 231,
+          "endName": "신대방",
+          "travelTime": 21
+        },
+        {
+          "startID": 231,
+          "startName": "신대방",
+          "endSID": 230,
+          "endName": "신림",
+          "travelTime": 23
+        },
+        {
+          "startID": 230,
+          "startName": "신림",
+          "endSID": 229,
+          "endName": "봉천",
+          "travelTime": 25
+        },
+        {
+          "startID": 229,
+          "startName": "봉천",
+          "endSID": 228,
+          "endName": "서울대입구",
+          "travelTime": 27
+        },
+        {
+          "startID": 228,
+          "startName": "서울대입구",
+          "endSID": 227,
+          "endName": "낙성대",
+          "travelTime": 29
+        },
+        {
+          "startID": 227,
+          "startName": "낙성대",
+          "endSID": 226,
+          "endName": "사당",
+          "travelTime": 31
+        },
+        {
+          "startID": 226,
+          "startName": "사당",
+          "endSID": 225,
+          "endName": "방배",
+          "travelTime": 34
+        },
+        {
+          "startID": 225,
+          "startName": "방배",
+          "endSID": 224,
+          "endName": "서초",
+          "travelTime": 36
+        },
+        {
+          "startID": 224,
+          "startName": "서초",
+          "endSID": 223,
+          "endName": "교대",
+          "travelTime": 38
+        },
+        {
+          "startID": 223,
+          "startName": "교대",
+          "endSID": 222,
+          "endName": "강남",
+          "travelTime": 40
+        },
+        {
+          "startID": 222,
+          "startName": "강남",
+          "endSID": 221,
+          "endName": "역삼",
+          "travelTime": 42
+        },
+        {
+          "startID": 221,
+          "startName": "역삼",
+          "endSID": 220,
+          "endName": "선릉",
+          "travelTime": 43
+        }
+      ]
+    }
+  }
+}

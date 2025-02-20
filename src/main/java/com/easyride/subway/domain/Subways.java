@@ -1,27 +1,25 @@
 package com.easyride.subway.domain;
 
-import com.easyride.global.exception.EasyRideException;
-import com.easyride.subway.exception.SubwayErrorCode;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.ArrayList;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
-@RequiredArgsConstructor
 public class Subways {
 
-    private final List<Subway> subways;
+    private final List<Subway> subways = new ArrayList<>();
 
-    public Subway findApproachingSubway(SubwayStation targetStation, SubwayStation nextStation) {
-        SubwayDirection direction = SubwayDirection.decideDirection(targetStation, nextStation);
-        return subways.stream()
-                .filter(subway -> subway.isSameDirection(direction))
-                .filter(subway -> subway.willPass(targetStation))
-                .min(Comparator.comparingInt(subway -> subway.distanceFrom(targetStation)))
-                .orElseThrow(() -> new EasyRideException(SubwayErrorCode.NO_APPROACHING_SUBWAY));
+    public void add(Subway subway) {
+        this.subways.add(subway);
     }
 
-    public List<Subway> getSubways() {
-        return Collections.unmodifiableList(subways);
+    public void deleteIf(Predicate<Subway> condition) {
+        this.subways.removeIf(condition);
+    }
+
+    public <T> List<T> mapAll(Function<Subway, T> mapper) {
+        return this.subways.stream()
+                .map(mapper)
+                .toList();
     }
 }

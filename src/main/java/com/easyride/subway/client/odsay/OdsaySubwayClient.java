@@ -2,8 +2,7 @@ package com.easyride.subway.client.odsay;
 
 import com.easyride.subway.client.dto.OdsaySearchStationResponse;
 import com.easyride.subway.client.dto.OdsayStationInfoResponse;
-import com.easyride.subway.domain.NearSubwayStations;
-import com.easyride.subway.domain.SubwayStations;
+import com.easyride.subway.client.dto.OdsayStationPathResponse;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
@@ -15,7 +14,9 @@ public class OdsaySubwayClient {
 
     private static final String PATH_OF_SEARCH_STATION = "/searchStation";
     private static final String PATH_OF_FETCH_STATION_INFO = "/subwayStationInfo";
+    private static final String PATH_OF_FETCH_SUBWAY_PATH = "/subwayPath";
     private static final int STATION_CLASS_OF_SUBWAY = 2;
+    private static final int SEARCH_PATH_CONDITION_OF_MIN_EXCHANGE = 2;
 
     private final RestClient restClient;
     private final OdsayResponseConverter responseConverter;
@@ -33,11 +34,10 @@ public class OdsaySubwayClient {
                 .toUriString();
     }
 
-    public SubwayStations searchStation(String stationName) {
-        OdsaySearchStationResponse response = restClient.get()
+    public OdsaySearchStationResponse searchStation(String stationName) {
+        return restClient.get()
                 .uri(makeSearchStationUri(stationName))
                 .exchange((req, res) -> responseConverter.convert(res, OdsaySearchStationResponse.class));
-        return response.toSubwayStations();
     }
 
     private String makeSearchStationUri(String stationName) {
@@ -49,17 +49,33 @@ public class OdsaySubwayClient {
                 .toUriString();
     }
 
-    public NearSubwayStations fetchStationInfo(String stationId) {
-        OdsayStationInfoResponse response = restClient.get()
+    public OdsayStationInfoResponse fetchStationInfo(String stationId) {
+        return restClient.get()
                 .uri(makeStationInfoUri(stationId))
                 .exchange((req, res) -> responseConverter.convert(res, OdsayStationInfoResponse.class));
-        return response.toNearSubwayStations();
     }
 
     private String makeStationInfoUri(String stationId) {
         return UriComponentsBuilder.newInstance()
                 .path(PATH_OF_FETCH_STATION_INFO)
                 .queryParam("stationID", stationId)
+                .build(false)
+                .toUriString();
+    }
+
+    public OdsayStationPathResponse fetchSubwayPath(String startStationId, String endStationId) {
+        return restClient.get()
+                .uri(makeSubwayPathUri(startStationId, endStationId))
+                .exchange((req, res) -> responseConverter.convert(res, OdsayStationPathResponse.class));
+    }
+
+    private String makeSubwayPathUri(String startStationId, String endStationId) {
+        return UriComponentsBuilder.newInstance()
+                .path(PATH_OF_FETCH_SUBWAY_PATH)
+                .queryParam("CID", 1000)
+                .queryParam("SID", startStationId)
+                .queryParam("EID", endStationId)
+                .queryParam("Sopt", SEARCH_PATH_CONDITION_OF_MIN_EXCHANGE)
                 .build(false)
                 .toUriString();
     }

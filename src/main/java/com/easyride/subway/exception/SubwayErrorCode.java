@@ -17,6 +17,7 @@ public enum SubwayErrorCode implements ErrorCode {
     INVALID_DIRECTION(HttpStatus.BAD_REQUEST, "유효하지 않은 방향입니다."),
     DATA_SEOUL_INVALID_STATION_LINE_NAME(HttpStatus.BAD_REQUEST, "유효하지 않은 지하철역 호선명입니다."),
     NO_APPROACHING_SUBWAY(HttpStatus.BAD_REQUEST, "다가올 지하철이 없습니다."),
+    CANNOT_PASS_THAT_SUBWAY(HttpStatus.BAD_REQUEST, "해당 위치를 지나지 않는 지하철입니다."),
     ;
 
     private final HttpStatus status;
