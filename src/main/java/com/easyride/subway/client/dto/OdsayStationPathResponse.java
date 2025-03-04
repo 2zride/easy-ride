@@ -1,6 +1,7 @@
 package com.easyride.subway.client.dto;
 
 import com.easyride.global.exception.EasyRideException;
+import com.easyride.subway.client.odsay.OdsayStationsManager;
 import com.easyride.subway.domain.Subway;
 import com.easyride.subway.domain.SubwayDirection;
 import com.easyride.subway.domain.SubwayStation;
@@ -11,7 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 
-public class OdsayStationPathResponse extends OdsayResponse {
+public class OdsayStationPathResponse extends OdsayResponse { // TODO DTO 패키지 정리
 
     private final SuccessDetail result;
 
@@ -28,13 +29,13 @@ public class OdsayStationPathResponse extends OdsayResponse {
     public SubwayWithPath toSubwayPath(Subway subway) {
         DriveInfoDetail driveInfo = result.driveInfoSet.driveInfo.get(0);
         List<SubwayStation> path = result.stationSet.stations.stream()
-                .map(detail -> toSubwayStation(detail, Integer.parseInt(driveInfo.stationLine)))
+                .map(this::toSubwayStation)
                 .toList();
         return new SubwayWithPath(subway, DirectionMapper.asDirection(driveInfo.wayCode, driveInfo.stationLine), path);
     }
 
-    private SubwayStation toSubwayStation(StationPathDetail stationPathDetail, int stationLine) {
-        return SubwayStation.of(stationPathDetail.passingStationId, stationPathDetail.passingStationName, stationLine);
+    private SubwayStation toSubwayStation(StationPathDetail stationPathDetail) {
+        return OdsayStationsManager.findStationByOdsayId(stationPathDetail.passingOdsayId);
     }
 
     private record SuccessDetail(
@@ -62,7 +63,7 @@ public class OdsayStationPathResponse extends OdsayResponse {
 
     private record StationPathDetail(
             @JsonAlias("endSID")
-            String passingStationId,
+            String passingOdsayId,
             @JsonAlias("endName")
             String passingStationName
     ) {

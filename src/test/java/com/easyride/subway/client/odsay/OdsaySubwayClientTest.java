@@ -32,20 +32,6 @@ class OdsaySubwayClientTest extends BaseRestClientTest {
     }
 
     @Test
-    void 지하철역_이름으로_지하철역_상세정보조회에_성공한다() throws IOException {
-        // given
-        String requestUri = uriGenerator.makeSearchStationUri("오이도");
-        String responseBody = readResourceFile("odsay/success/search-station.json");
-        configure200MockServer(requestUri, responseBody);
-
-        // when & then
-        assertAll(
-                () -> assertDoesNotThrow(() -> subwayClient.searchStation("오이도")),
-                () -> mockServer.verify()
-        );
-    }
-
-    @Test
     void 지하철역_ID로_양옆_지하철역_세부정보조회에_성공한다() throws IOException {
         // given
         String requestUri = uriGenerator.makeStationInfoUri("456"); // 오이도
@@ -62,13 +48,13 @@ class OdsaySubwayClientTest extends BaseRestClientTest {
     @Test
     void 오디세이가_에러_500를_반환하면_예외를_반환한다() throws IOException {
         // given
-        String requestUri = uriGenerator.makeSearchStationUri("오이도");
+        String requestUri = uriGenerator.makeStationInfoUri("456");
         String responseBody = readResourceFile("odsay/error/error500.json");
         configure200MockServer(requestUri, responseBody);
 
         // when & then
         assertAll(
-                () -> assertThatThrownBy(() -> subwayClient.searchStation("오이도"))
+                () -> assertThatThrownBy(() -> subwayClient.fetchStationInfo("456"))
                         .isInstanceOf(EasyRideException.class)
                         .hasMessage("오디세이 API 호출 과정에서 예외가 발생했습니다."),
                 () -> mockServer.verify()
@@ -78,13 +64,13 @@ class OdsaySubwayClientTest extends BaseRestClientTest {
     @Test
     void 오디세이가_에러_8를_반환하면_예외를_반환한다() throws IOException {
         // given
-        String requestUri = uriGenerator.makeSearchStationUri("오이도");
+        String requestUri = uriGenerator.makeStationInfoUri("456");
         String responseBody = readResourceFile("odsay/error/error8.json");
         configure200MockServer(requestUri, responseBody);
 
         // when & then
         assertAll(
-                () -> assertThatThrownBy(() -> subwayClient.searchStation("오이도"))
+                () -> assertThatThrownBy(() -> subwayClient.fetchStationInfo("456"))
                         .isInstanceOf(EasyRideException.class)
                         .hasMessage("오디세이 API 호출 과정에서 예외가 발생했습니다."),
                 () -> mockServer.verify()
@@ -94,13 +80,13 @@ class OdsaySubwayClientTest extends BaseRestClientTest {
     @Test
     void 오디세이가_에러_9를_반환하면_예외를_반환한다() throws IOException {
         // given
-        String requestUri = uriGenerator.makeSearchStationUri("오이도");
+        String requestUri = uriGenerator.makeStationInfoUri("456");
         String responseBody = readResourceFile("odsay/error/error9.json");
         configure200MockServer(requestUri, responseBody);
 
         // when & then
         assertAll(
-                () -> assertThatThrownBy(() -> subwayClient.searchStation("오이도"))
+                () -> assertThatThrownBy(() -> subwayClient.fetchStationInfo("456"))
                         .isInstanceOf(EasyRideException.class)
                         .hasMessage("오디세이 API 호출 과정에서 예외가 발생했습니다."),
                 () -> mockServer.verify()
@@ -110,12 +96,12 @@ class OdsaySubwayClientTest extends BaseRestClientTest {
     @Test
     void 오디세이가_400_에러를_반환하면_예외를_반환한다() {
         // given
-        String requestUri = uriGenerator.makeSearchStationUri("오이도");
+        String requestUri = uriGenerator.makeStationInfoUri("456");
         configure400MockServer(requestUri);
 
         // when & then
         assertAll(
-                () -> assertThatThrownBy(() -> subwayClient.searchStation("오이도"))
+                () -> assertThatThrownBy(() -> subwayClient.fetchStationInfo("456"))
                         .isInstanceOf(EasyRideException.class)
                         .hasMessage("오디세이 API 호출 과정에서 예외가 발생했습니다."),
                 () -> mockServer.verify()

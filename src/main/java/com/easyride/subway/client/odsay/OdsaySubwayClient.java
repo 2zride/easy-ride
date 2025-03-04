@@ -1,6 +1,5 @@
 package com.easyride.subway.client.odsay;
 
-import com.easyride.subway.client.dto.OdsaySearchStationResponse;
 import com.easyride.subway.client.dto.OdsayStationInfoResponse;
 import com.easyride.subway.client.dto.OdsayStationPathResponse;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -12,10 +11,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 @Component
 public class OdsaySubwayClient {
 
-    private static final String PATH_OF_SEARCH_STATION = "/searchStation";
     private static final String PATH_OF_FETCH_STATION_INFO = "/subwayStationInfo";
     private static final String PATH_OF_FETCH_SUBWAY_PATH = "/subwayPath";
-    private static final int STATION_CLASS_OF_SUBWAY = 2;
     private static final int SEARCH_PATH_CONDITION_OF_MIN_EXCHANGE = 2;
 
     private final RestClient restClient;
@@ -31,21 +28,6 @@ public class OdsaySubwayClient {
     private String baseUri(OdsayProperty property) {
         return UriComponentsBuilder.fromUriString(property.baseUrl())
                 .queryParam("apiKey", property.apiKey())
-                .toUriString();
-    }
-
-    public OdsaySearchStationResponse searchStation(String stationName) {
-        return restClient.get()
-                .uri(makeSearchStationUri(stationName))
-                .exchange((req, res) -> responseConverter.convert(res, OdsaySearchStationResponse.class));
-    }
-
-    private String makeSearchStationUri(String stationName) {
-        return UriComponentsBuilder.newInstance()
-                .path(PATH_OF_SEARCH_STATION)
-                .queryParam("stationName", stationName)
-                .queryParam("stationClass", STATION_CLASS_OF_SUBWAY)
-                .build(false)
                 .toUriString();
     }
 

@@ -1,5 +1,6 @@
 package com.easyride.subway.domain;
 
+import com.easyride.subway.entity.SubwayStationEntity;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -19,8 +20,11 @@ public class SubwayStation {
         return new SubwayStation(id, name, line);
     }
 
-    public boolean hasLine(int stationLineNumber) {
-        StationLine stationLine = StationLine.asStationLine(stationLineNumber);
-        return line.isSame(stationLine);
+    public static SubwayStation of(String id, String name, StationLine line) {
+        return new SubwayStation(id, name, line);
+    }
+
+    public static SubwayStation fromEntity(SubwayStationEntity entity) {
+        return new SubwayStation(entity.getStationId(), entity.getName(), entity.getLine());
     }
 }
